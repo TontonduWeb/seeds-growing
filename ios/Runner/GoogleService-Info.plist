@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>39443232027-m9l9hig4kgord6rsp49nu82iikalvkrq.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.39443232027-m9l9hig4kgord6rsp49nu82iikalvkrq</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB1z_z05pfb4Z8pV-SGyHQpetKOTCInRWg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>39443232027</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.seeds</string>
+	<key>PROJECT_ID</key>
+	<string>seeds-growing</string>
+	<key>STORAGE_BUCKET</key>
+	<string>seeds-growing.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:39443232027:ios:70081c0994917d94bacfbe</string>
+</dict>
+</plist>
