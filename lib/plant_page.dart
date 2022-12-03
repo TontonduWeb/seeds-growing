@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:seeds/plant.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class PlantPage extends StatefulWidget {
   const PlantPage({super.key});
@@ -10,6 +12,7 @@ class PlantPage extends StatefulWidget {
 }
 
 class _PlantPageState extends State<PlantPage> {
+  final format = DateFormat("yyyy-MM-dd");
   final controllerName = TextEditingController();
   final controllerCategorie = TextEditingController();
   final controllerDate = TextEditingController();
@@ -32,25 +35,25 @@ class _PlantPageState extends State<PlantPage> {
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 24),
-            // DateTimeField(
-            //   decoration: decoration('Date'),
-            //   format: DateFormat('yyyy-MM-dd'),
-            //   onShowPicker: (context, currentValue) => (
-            //     context: context,
-            //     firstDate: DateTime(1900),
-            //     lastDate: DateTime(2100),
-            //     initialState: currentValue ?? DateTime.now()
-            //   ),
-            // ),
+            DateTimeField(
+              controller: controllerDate,
+              format: format,
+              onShowPicker: (context, currentValue) {
+                return showDatePicker(
+                    context: context,
+                    firstDate: DateTime(1900),
+                    initialDate: currentValue ?? DateTime.now(),
+                    lastDate: DateTime(2100));
+              },
+            ),
             const SizedBox(height: 32),
             ElevatedButton(
                 child: const Text('Créer'),
                 onPressed: () {
                   final plant = Plant(
-                    name: controllerName.text,
-                    categorie: controllerCategorie.text,
-                    // date: DateTime.parse(controllerDate.text)
-                  );
+                      name: controllerName.text,
+                      categorie: controllerCategorie.text,
+                      date: DateTime.parse(controllerDate.text));
                   createPlant(plant);
                   Navigator.pop(context);
                 })

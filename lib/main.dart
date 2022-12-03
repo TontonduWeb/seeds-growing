@@ -1,13 +1,12 @@
-import 'package:flutter/material.dart';
+import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 
 import 'dart:async';
 
 import 'package:seeds/plant.dart';
 import 'package:seeds/plant_page.dart';
-
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,10 +59,12 @@ class _MyHomePageState extends State<MyHomePage> {
           title: TextField(controller: controller),
           actions: [
             IconButton(
-              icon: Icon(Icons.add),
+              icon: const Icon(Icons.add),
               onPressed: () {
                 final name = controller.text;
-                createPlant(name: name);
+                final categorie = controller.text;
+                final date = DateTime.parse(controller.text);
+                createPlant(name: name, categorie: categorie, date: date);
               },
             )
           ],
@@ -86,16 +87,19 @@ class _MyHomePageState extends State<MyHomePage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PlantPage(),
+                  builder: (context) => const PlantPage(),
                 ));
           },
         ),
       );
-  Future createPlant({required String name}) async {
+  Future createPlant(
+      {required String name,
+      required String categorie,
+      required DateTime date}) async {
     final docPlant = FirebaseFirestore.instance.collection('plants').doc();
 
-    final plant = Plant(id: docPlant.id, name: name, categorie: 'racine');
-    // date: DateTime(2017, 9, 7));
+    final plant =
+        Plant(id: docPlant.id, name: name, categorie: categorie, date: date);
     final json = plant.toJson();
 
     await docPlant.set(json);
@@ -104,4 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 Widget buildPlant(Plant plant) => ListTile(
       title: Text(plant.name),
+      subtitle: Text(plant.categorie),
+      trailing: Text('${plant.date}'),
+      isThreeLine: true,
     );

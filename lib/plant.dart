@@ -4,21 +4,20 @@ class Plant {
   String id;
   final String name;
   final String categorie;
-  // final DateTime date;
+  final DateTime date;
 
-  Plant({
-    this.id = '',
-    required this.name,
-    required this.categorie,
-    // required this.date
-  });
+  Plant(
+      {this.id = '',
+      required this.name,
+      required this.categorie,
+      required this.date});
 
   Map<String, dynamic> toJson() =>
-      {'id': id, 'name': name, 'categorie': categorie};
+      {'id': id, 'name': name, 'categorie': categorie, 'date': date};
 
   static Plant fromJson(Map<String, dynamic> json) => Plant(
         name: json['name'],
         categorie: json['categorie'],
-        // date: (json['date'] as Timestamp).toDate(),
+        date: (json['date'] as Timestamp).toDate(),
       );
 }
