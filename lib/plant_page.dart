@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
-import 'package:seeds/plant.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:seeds/plant.dart';
 
 class PlantPage extends StatefulWidget {
   const PlantPage({super.key});
+
+  static const routeName = '/extractArguments';
 
   @override
   State<PlantPage> createState() => _PlantPageState();
@@ -13,63 +17,90 @@ class PlantPage extends StatefulWidget {
 
 class _PlantPageState extends State<PlantPage> {
   final format = DateFormat("yyyy-MM-dd");
-  final controllerName = TextEditingController();
-  final controllerCategorie = TextEditingController();
-  final controllerDate = TextEditingController();
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Ajouter une plante'),
-        ),
-        body: ListView(
-          padding: const EdgeInsets.all(16),
-          children: <Widget>[
-            TextField(
-              controller: controllerName,
-              decoration: decoration('Nom'),
-            ),
-            const SizedBox(height: 24),
-            TextField(
-              controller: controllerCategorie,
-              decoration: decoration('Categorie'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 24),
-            DateTimeField(
-              controller: controllerDate,
-              format: format,
-              onShowPicker: (context, currentValue) {
-                return showDatePicker(
-                    context: context,
-                    firstDate: DateTime(1900),
-                    initialDate: currentValue ?? DateTime.now(),
-                    lastDate: DateTime(2100));
-              },
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-                child: const Text('Créer'),
-                onPressed: () {
-                  final plant = Plant(
-                      name: controllerName.text,
-                      categorie: controllerCategorie.text,
-                      date: DateTime.parse(controllerDate.text));
-                  createPlant(plant);
-                  Navigator.pop(context);
-                })
-          ],
-        ),
-      );
+  Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Plant;
+    final controllerName = TextEditingController(text: args.name);
+    final controllerCategorie = TextEditingController(text: args.categorie);
+    final controllerDate =
+        TextEditingController(text: format.format(args.date));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(args.name),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: <Widget>[
+          TextField(
+            controller: controllerName,
+            decoration: decoration("Nom du légume"),
+          ),
+          const SizedBox(height: 24),
+          TextField(
+            controller: controllerCategorie,
+            decoration: decoration("Sa catégorie"),
+          ),
+          const SizedBox(height: 24),
+          DateTimeField(
+            controller: controllerDate,
+            decoration: decoration('Période de sémis'),
+            format: format,
+            onShowPicker: (context, currentValue) {
+              return showDatePicker(
+                  context: context,
+                  firstDate: DateTime(1900),
+                  initialDate: args.date,
+                  lastDate: DateTime(2100));
+            },
+          ),
+          const SizedBox(height: 32),
+          ElevatedButton.icon(
+            label: const Text('Mettre à jour'),
+            onPressed: () {
+              final plant = Plant(
+                  name: controllerName.text,
+                  categorie: controllerCategorie.text,
+                  date: DateTime.parse(controllerDate.text));
+              updatePlant(plant, args);
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.update),
+          ),
+          ElevatedButton.icon(
+            label: const Text('Supprimer'),
+            onPressed: () {
+              deletePlant(id: args.id);
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.delete),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          ),
+        ],
+      ),
+    );
+  }
 
   InputDecoration decoration(String label) => InputDecoration(
         labelText: label,
         border: const OutlineInputBorder(),
       );
 
-  Future createPlant(Plant plant) async {
-    final docPlant = FirebaseFirestore.instance.collection('plants').doc();
-    plant.id = docPlant.id;
-    final json = plant.toJson();
-    await docPlant.set(json);
+  Future deletePlant({
+    required String id,
+  }) async {
+    FirebaseFirestore.instance.collection('plants').doc(id).delete();
+  }
+
+  Future updatePlant(Plant plant, args) async {
+    Map<String, dynamic> data = <String, dynamic>{
+      "name": plant.name,
+      "categorie": plant.categorie,
+      "date": plant.date
+    };
+    final docPlant =
+        FirebaseFirestore.instance.collection('plants').doc(args.id);
+    // final json = plant.toJson();
+    await docPlant.update(data).then((value) => log("Success update"),
+        onError: (e) => log("Error update"));
   }
 }

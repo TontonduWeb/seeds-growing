@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Plant {
-  String id;
+  final String id;
   final String name;
   final String categorie;
   final DateTime date;
@@ -16,6 +16,7 @@ class Plant {
       {'id': id, 'name': name, 'categorie': categorie, 'date': date};
 
   static Plant fromJson(Map<String, dynamic> json) => Plant(
+        id: json['id'],
         name: json['name'],
         categorie: json['categorie'],
         date: (json['date'] as Timestamp).toDate(),
