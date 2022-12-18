@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:seeds/plant.dart';
 
-class PlantPage extends StatefulWidget {
-  const PlantPage({super.key});
+class EditPlantPage extends StatefulWidget {
+  const EditPlantPage({super.key});
 
   static const routeName = '/extractArguments';
 
   @override
-  State<PlantPage> createState() => _PlantPageState();
+  State<EditPlantPage> createState() => _EditPlantPageState();
 }
 
-class _PlantPageState extends State<PlantPage> {
+class _EditPlantPageState extends State<EditPlantPage> {
   final format = DateFormat("yyyy-MM-dd");
   @override
   Widget build(BuildContext context) {

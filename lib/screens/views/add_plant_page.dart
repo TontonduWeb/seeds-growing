@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +60,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
                 Navigator.pop(context);
               },
               icon: const Icon(Icons.add),
-            )
+            ),
           ],
         ),
       );
