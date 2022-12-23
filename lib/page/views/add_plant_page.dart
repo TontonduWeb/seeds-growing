@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +52,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
               onPressed: () {
                 final plant = Plant(
                     name: controllerName.text,
-                    categorie: controllerCategorie.text,
+                    category: controllerCategorie.text,
                     date: DateTime.parse(controllerDate.text));
                 createPlant(plant);
                 Navigator.pop(context);

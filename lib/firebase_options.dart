@@ -58,7 +58,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '39443232027',
     projectId: 'seeds-growing',
     storageBucket: 'seeds-growing.appspot.com',
-    iosClientId: '39443232027-m9l9hig4kgord6rsp49nu82iikalvkrq.apps.googleusercontent.com',
-    iosBundleId: 'com.example.seeds',
+    iosClientId:
+        '39443232027-m9l9hig4kgord6rsp49nu82iikalvkrq.apps.googleusercontent.com',
+    iosBundleId: 'com.example.seeds-growing',
   );
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:seeds/screens/fruit_plant_page.dart';
-import 'package:seeds/screens/leaf_plant_page.dart';
+import 'package:seeds/page/fruit_plant_page.dart';
+import 'package:seeds/page/leaf_plant_page.dart';
 
 class CategoriesPlant extends StatelessWidget {
   const CategoriesPlant({super.key});

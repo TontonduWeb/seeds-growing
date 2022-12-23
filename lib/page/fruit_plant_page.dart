@@ -1,21 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:seeds/screens/views/add_plant_page.dart';
-import 'package:seeds/screens/views/edit_plant_page.dart';
+import 'package:seeds/page/views/add_plant_page.dart';
+import 'package:seeds/page/views/edit_plant_page.dart';
 
 import '../plant.dart';
 
-class FeuillePlantPage extends StatefulWidget {
-  const FeuillePlantPage({super.key});
+class FruitPlantPage extends StatefulWidget {
+  const FruitPlantPage({super.key});
 
   @override
-  State<FeuillePlantPage> createState() => _FeuillePlantPage();
+  State<FruitPlantPage> createState() => _FruitPlantPage();
 }
 
-class _FeuillePlantPage extends State<FeuillePlantPage> {
+class _FruitPlantPage extends State<FruitPlantPage> {
   Stream<List<Plant>> getRootPlants() => FirebaseFirestore.instance
       .collection('plants')
-      .where("categorie", isEqualTo: "feuille")
+      .where("category", isEqualTo: "fruit")
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => Plant.fromJson(doc.data())).toList());
@@ -23,7 +23,7 @@ class _FeuillePlantPage extends State<FeuillePlantPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('Plantes Feuille'),
+          title: const Text('Plantes Fruit'),
         ),
         body: StreamBuilder<List<Plant>>(
           stream: getRootPlants(),
@@ -55,10 +55,10 @@ class _FeuillePlantPage extends State<FeuillePlantPage> {
               arguments: Plant(
                   id: plant.id,
                   name: plant.name,
-                  categorie: plant.categorie,
+                  category: plant.category,
                   date: plant.date));
         },
         title: Text(plant.name),
-        subtitle: Text(plant.categorie),
+        subtitle: Text(plant.category),
       );
 }

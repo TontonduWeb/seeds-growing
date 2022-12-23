@@ -21,7 +21,7 @@ class _EditPlantPageState extends State<EditPlantPage> {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as Plant;
     final controllerName = TextEditingController(text: args.name);
-    final controllerCategorie = TextEditingController(text: args.categorie);
+    final controllerCategorie = TextEditingController(text: args.category);
     final controllerDate =
         TextEditingController(text: format.format(args.date));
     return Scaffold(
@@ -59,7 +59,7 @@ class _EditPlantPageState extends State<EditPlantPage> {
             onPressed: () {
               final plant = Plant(
                   name: controllerName.text,
-                  categorie: controllerCategorie.text,
+                  category: controllerCategorie.text,
                   date: DateTime.parse(controllerDate.text));
               updatePlant(plant, args);
               Navigator.pop(context);
@@ -94,7 +94,7 @@ class _EditPlantPageState extends State<EditPlantPage> {
   Future updatePlant(Plant plant, args) async {
     Map<String, dynamic> data = <String, dynamic>{
       "name": plant.name,
-      "categorie": plant.categorie,
+      "category": plant.category,
       "date": plant.date
     };
     final docPlant =

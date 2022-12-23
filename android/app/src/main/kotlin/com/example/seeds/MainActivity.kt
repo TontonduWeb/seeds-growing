@@ -1,4 +1,4 @@
-package com.example.seeds
+package com.example.seeds-growing
 
 import io.flutter.embedding.android.FlutterActivity
 

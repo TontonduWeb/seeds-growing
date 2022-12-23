@@ -41,6 +41,8 @@ dependencies:
   cloud_firestore: ^4.1.0
   intl: ^0.17.0
   datetime_picker_formfield: ^2.0.1
+  firebase_auth: ^4.2.1
+  email_validator: ^2.1.17
 
 dev_dependencies:
   flutter_test:
