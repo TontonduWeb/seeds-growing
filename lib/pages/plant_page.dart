@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:seeds/page/profile_page.dart';
-import 'package:seeds/page/views/add_plant_page.dart';
-import 'package:seeds/page/views/edit_plant_page.dart';
+import 'package:seeds/models/plant.dart';
+import 'package:seeds/pages/profile_page.dart';
+import 'package:seeds/pages/views/add_plant_page.dart';
+import 'package:seeds/pages/views/edit_plant_page.dart';
 
-import '../plant.dart';
 import 'auth_page.dart';
 
 class PlantPage extends StatefulWidget {
@@ -17,15 +17,15 @@ class PlantPage extends StatefulWidget {
 
 class _PlantPageState extends State<PlantPage> {
   bool isUserConnected = false;
+  final user = FirebaseAuth.instance.currentUser!;
 
   void getUser() {
-    if (FirebaseAuth.instance.currentUser != null) {
-      isUserConnected = true;
-    }
+    if (FirebaseAuth.instance.currentUser != null) isUserConnected = true;
   }
 
   Stream<List<Plant>> readPlants() => FirebaseFirestore.instance
       .collection('plants')
+      .where('userId', isEqualTo: user.uid)
       .snapshots()
       .map((snapshot) => snapshot.docs
           .map(
@@ -83,16 +83,20 @@ class _PlantPageState extends State<PlantPage> {
           ),
         );
 
-  Widget buildPlant(Plant plant) => ListTile(
-        onTap: () {
-          Navigator.pushNamed(context, EditPlantPage.routeName,
-              arguments: Plant(
-                  id: plant.id,
-                  name: plant.name,
-                  category: plant.category,
-                  date: plant.date));
-        },
-        title: Text(plant.name),
-        subtitle: Text(plant.category),
-      );
+  Widget buildPlant(Plant plant) {
+    final user = FirebaseAuth.instance.currentUser!;
+    return ListTile(
+      onTap: () {
+        Navigator.pushNamed(context, EditPlantPage.routeName,
+            arguments: Plant(
+                id: plant.id,
+                userId: user.uid,
+                name: plant.name,
+                category: plant.category,
+                date: plant.date));
+      },
+      title: Text(plant.name),
+      subtitle: Text(plant.category),
+    );
+  }
 }

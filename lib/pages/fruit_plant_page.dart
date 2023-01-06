@@ -1,21 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:seeds/page/views/add_plant_page.dart';
-import 'package:seeds/page/views/edit_plant_page.dart';
+import 'package:seeds/pages/views/add_plant_page.dart';
+import 'package:seeds/pages/views/edit_plant_page.dart';
 
-import '../plant.dart';
+import '../models/plant.dart';
 
-class FeuillePlantPage extends StatefulWidget {
-  const FeuillePlantPage({super.key});
+class FruitPlantPage extends StatefulWidget {
+  const FruitPlantPage({super.key});
 
   @override
-  State<FeuillePlantPage> createState() => _FeuillePlantPage();
+  State<FruitPlantPage> createState() => _FruitPlantPage();
 }
 
-class _FeuillePlantPage extends State<FeuillePlantPage> {
+class _FruitPlantPage extends State<FruitPlantPage> {
   Stream<List<Plant>> getRootPlants() => FirebaseFirestore.instance
       .collection('plants')
-      .where("category", isEqualTo: "feuille")
+      .where("category", isEqualTo: "fruit")
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => Plant.fromJson(doc.data())).toList());
@@ -23,7 +23,7 @@ class _FeuillePlantPage extends State<FeuillePlantPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('Plantes Feuille'),
+          title: const Text('Plantes Fruit'),
         ),
         body: StreamBuilder<List<Plant>>(
           stream: getRootPlants(),
@@ -49,14 +49,14 @@ class _FeuillePlantPage extends State<FeuillePlantPage> {
           },
         ),
       );
+
   Widget buildPlant(Plant plant) => ListTile(
         onTap: () {
-          Navigator.pushNamed(context, EditPlantPage.routeName,
-              arguments: Plant(
-                  id: plant.id,
-                  name: plant.name,
-                  category: plant.category,
-                  date: plant.date));
+          Navigator.pushNamed(
+            context,
+            EditPlantPage.routeName,
+            arguments: plant,
+          );
         },
         title: Text(plant.name),
         subtitle: Text(plant.category),

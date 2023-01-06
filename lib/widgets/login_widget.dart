@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:seeds/main.dart';
-import 'package:seeds/page/forgot_password_page.dart';
+import 'package:seeds/pages/forgot_password_page.dart';
 import 'package:seeds/utils.dart';
 
 class LoginWidget extends StatefulWidget {

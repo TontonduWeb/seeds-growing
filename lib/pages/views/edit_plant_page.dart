@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:seeds/plant.dart';
+import 'package:seeds/models/plant.dart';
 
 class EditPlantPage extends StatefulWidget {
   const EditPlantPage({super.key});
@@ -19,14 +19,16 @@ class _EditPlantPageState extends State<EditPlantPage> {
   final format = DateFormat("yyyy-MM-dd");
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as Plant;
-    final controllerName = TextEditingController(text: args.name);
-    final controllerCategorie = TextEditingController(text: args.category);
+    final currentPlant = ModalRoute.of(context)!.settings.arguments as Plant;
+    final controllerName = TextEditingController(text: currentPlant.name);
+    final controllerCategorie =
+        TextEditingController(text: currentPlant.category);
     final controllerDate =
-        TextEditingController(text: format.format(args.date));
+        TextEditingController(text: format.format(currentPlant.date));
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(args.name),
+        title: Text(currentPlant.name),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -49,7 +51,7 @@ class _EditPlantPageState extends State<EditPlantPage> {
               return showDatePicker(
                   context: context,
                   firstDate: DateTime(1900),
-                  initialDate: args.date,
+                  initialDate: currentPlant.date,
                   lastDate: DateTime(2100));
             },
           ),
@@ -57,11 +59,12 @@ class _EditPlantPageState extends State<EditPlantPage> {
           ElevatedButton.icon(
             label: const Text('Mettre à jour'),
             onPressed: () {
-              final plant = Plant(
-                  name: controllerName.text,
-                  category: controllerCategorie.text,
-                  date: DateTime.parse(controllerDate.text));
-              updatePlant(plant, args);
+              final editingPlant = currentPlant.copyWith(
+                name: controllerName.text,
+                category: controllerCategorie.text,
+                date: DateTime.parse(controllerDate.text),
+              );
+              updatePlant(editingPlant, currentPlant);
               Navigator.pop(context);
             },
             icon: const Icon(Icons.update),
@@ -69,7 +72,7 @@ class _EditPlantPageState extends State<EditPlantPage> {
           ElevatedButton.icon(
             label: const Text('Supprimer'),
             onPressed: () {
-              deletePlant(id: args.id);
+              deletePlant(id: currentPlant.id);
               Navigator.pop(context);
             },
             icon: const Icon(Icons.delete),
@@ -91,16 +94,11 @@ class _EditPlantPageState extends State<EditPlantPage> {
     FirebaseFirestore.instance.collection('plants').doc(id).delete();
   }
 
-  Future updatePlant(Plant plant, args) async {
-    Map<String, dynamic> data = <String, dynamic>{
-      "name": plant.name,
-      "category": plant.category,
-      "date": plant.date
-    };
+  Future updatePlant(Plant updatingPlant, Plant currentPlant) async {
     final docPlant =
-        FirebaseFirestore.instance.collection('plants').doc(args.id);
-    // final json = plant.toJson();
-    await docPlant.update(data).then((value) => log("Success update"),
+        FirebaseFirestore.instance.collection('plants').doc(currentPlant.id);
+    await docPlant.update(updatingPlant.toJson()).then(
+        (value) => log("Success update"),
         onError: (e) => log("Error update"));
   }
 }

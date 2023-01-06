@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:seeds/page/plant_page.dart';
+import 'package:seeds/pages/landing_page.dart';
 import 'package:seeds/utils.dart';
 
 class VerifyEmailPage extends StatefulWidget {
@@ -42,7 +42,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
   @override
   Widget build(BuildContext context) => isEmailVerified
-      ? const PlantPage()
+      ? const LandingPage()
       : Scaffold(
           appBar: AppBar(
             title: const Text('Verifier votre email'),
@@ -103,6 +103,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     setState(() {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
     });
-    if (isEmailVerified) timer?.cancel();
+    if (isEmailVerified) {
+      timer?.cancel();
+    }
   }
 }

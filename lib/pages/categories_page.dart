@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seeds/page/fruit_plant_page.dart';
-import 'package:seeds/page/leaf_plant_page.dart';
+import 'package:seeds/pages/plant_category_page.dart';
 
 class CategoriesPlant extends StatelessWidget {
   const CategoriesPlant({super.key});
@@ -17,7 +16,9 @@ class CategoriesPlant extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const FeuillePlantPage(),
+                  builder: (context) => const PlantCategoryPage(
+                    category: 'feuille',
+                  ),
                 ));
           },
           icon: const Icon(Icons.eco),
@@ -28,7 +29,9 @@ class CategoriesPlant extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const FruitPlantPage(),
+                  builder: (context) => const PlantCategoryPage(
+                    category: 'fruit',
+                  ),
                 ));
           },
           icon: const Icon(Icons.trip_origin),
