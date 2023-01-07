@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:seeds/pages/auth_page.dart';
 import 'package:seeds/pages/categories_page.dart';
-import 'package:seeds/pages/plant_page.dart';
 import 'package:seeds/pages/views/edit_plant_page.dart';
+import 'package:seeds/pages/views/plants_ref_page.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -17,7 +17,7 @@ class LandingPage extends StatelessWidget {
       home: const MyHomePage(title: 'Seeds Growing App'),
       routes: {
         EditPlantPage.routeName: (context) => const EditPlantPage(),
-        '/second': (context) => const PlantPage(),
+        '/second': (context) => const PlantsRefPage(),
       },
     );
   }
@@ -55,11 +55,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ? const AuthPage()
       : Scaffold(
           body: PageView(
-            onPageChanged: (index) {
-              setState(() => _currentIndex = index);
-            },
+            // onPageChanged: (index) {
+            //   setState(() => _currentIndex = index);
+            // },
             controller: _pageController,
-            children: const <Widget>[PlantPage(), CategoriesPlant()],
+            children: const <Widget>[PlantsRefPage(), CategoriesPlant()],
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _currentIndex,

@@ -19,9 +19,9 @@ class _PlantPageState extends State<PlantPage> {
   bool isUserConnected = false;
   final user = FirebaseAuth.instance.currentUser!;
 
-  void getUser() {
-    if (FirebaseAuth.instance.currentUser != null) isUserConnected = true;
-  }
+  // void getUser() {
+  //   if (FirebaseAuth.instance.currentUser != null) isUserConnected = true;
+  // }
 
   Stream<List<Plant>> readPlants() => FirebaseFirestore.instance
       .collection('plants')
