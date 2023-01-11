@@ -19,20 +19,20 @@ class _PlantsRefPageState extends State<SearchPage> {
   final plantsFromFirestore = <Plant>[];
   final userPlants = <Plant>[];
 
-  // readUserPlants() => FirebaseFirestore.instance
-  //     .collection('plants')
-  //     .where('userId', isEqualTo: user.uid)
-  //     .snapshots()
-  //     .map((snapshot) => snapshot.docs
-  //         .map(
-  //           (doc) => Plant.fromJson(
-  //             {
-  //               ...doc.data(),
-  //               'id': doc.id,
-  //             },
-  //           ),
-  //         )
-  //         .toList());
+  Stream<List<Plant>> readUserPlantsFS() => FirebaseFirestore.instance
+      .collection('plants')
+      .where('userId', isEqualTo: user.uid)
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map(
+            (doc) => Plant.fromJson(
+              {
+                ...doc.data(),
+                'id': doc.id,
+              },
+            ),
+          )
+          .toList());
 
   Stream<List<Plant>> readPlantsFS() => FirebaseFirestore.instance
       .collection('plantsRef')
@@ -42,7 +42,7 @@ class _PlantsRefPageState extends State<SearchPage> {
 
   @override
   void initState() {
-    // listenUserPlants();
+    listenUserPlants();
     listenPlants();
     plants.addAll(plantsFromFirestore);
     super.initState();
@@ -57,28 +57,31 @@ class _PlantsRefPageState extends State<SearchPage> {
     });
   }
 
-  // void listenUserPlants() {
-  //   readUserPlants().listen((listPlant) {
-  //     for (var userPlant in listPlant) {
-  //       userPlants.add(userPlant);
-  //       userPlants.sort((a, b) => a.nom.compareTo(b.nom));
-  //     }
-  //   });
-  // }
+  void listenUserPlants() {
+    readUserPlantsFS().listen((listPlant) {
+      for (var userPlant in listPlant) {
+        userPlants.add(userPlant);
+        userPlants.sort((a, b) => a.nom.compareTo(b.nom));
+      }
+    });
+  }
 
-  void filterSearchResults(String query) {
-    List<Plant> dummySearchList = <Plant>[];
-    dummySearchList.addAll(plantsFromFirestore);
-    if (query.isNotEmpty) {
-      List<Plant> dummyListData = <Plant>[];
-      for (var item in dummySearchList) {
-        if (item.nom.contains(query)) {
-          dummyListData.add(item);
+  void filterSearchResults(String searchInput) {
+    if (searchInput.isNotEmpty) {
+      List<Plant> inputPlantList = <Plant>[];
+      for (var plantFS in plantsFromFirestore) {
+        if (plantFS.nom.contains(searchInput)) {
+          inputPlantList.add(plantFS);
+          for (var userPlant in userPlants) {
+            if (plantFS.nom == userPlant.nom) {
+              inputPlantList.remove(plantFS);
+            }
+          }
         }
       }
       setState(() {
         plants.clear();
-        plants.addAll(dummyListData);
+        plants.addAll(inputPlantList);
       });
       return;
     } else {
@@ -89,7 +92,7 @@ class _PlantsRefPageState extends State<SearchPage> {
     }
   }
 
-  void tapCallback(Plant plantRef) {
+  void selectPlant(Plant plantRef) {
     Navigator.pushNamed(context, AddPlantPage.routeName,
         arguments: Plant(
             id: plantRef.id,
@@ -129,7 +132,7 @@ class _PlantsRefPageState extends State<SearchPage> {
                 return ListTile(
                   title: Text(plants[index].nom),
                   subtitle: Text(plants[index].category),
-                  onTap: () => tapCallback(plants[index]),
+                  onTap: () => selectPlant(plants[index]),
                 );
               },
             ),

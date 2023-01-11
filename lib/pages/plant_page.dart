@@ -58,6 +58,7 @@ class _PlantPageState extends State<PlantPage> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final plants = snapshot.data!;
+                plants.sort((a, b) => a.nom.compareTo(b.nom));
                 return ListView(
                   children: plants.map((plant) => buildPlant(plant)).toList(),
                 );

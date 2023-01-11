@@ -51,7 +51,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
           // ),
           const SizedBox(height: 32),
           ElevatedButton.icon(
-            label: const Text('Mettre à jour'),
+            label: const Text('Ajouter la plante'),
             onPressed: () {
               final settingPlant = Plant(
                 id: currentPlant.id,
@@ -67,7 +67,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
               setPlant(settingPlant: settingPlant);
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.update),
+            icon: const Icon(Icons.add),
           ),
         ],
       ),
