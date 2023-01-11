@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:seeds/models/plant.dart';
 import 'package:seeds/pages/profile_page.dart';
-import 'package:seeds/pages/views/add_plant_page.dart';
 import 'package:seeds/pages/views/edit_plant_page.dart';
 
 import 'auth_page.dart';
@@ -18,10 +17,6 @@ class PlantPage extends StatefulWidget {
 class _PlantPageState extends State<PlantPage> {
   bool isUserConnected = false;
   final user = FirebaseAuth.instance.currentUser!;
-
-  // void getUser() {
-  //   if (FirebaseAuth.instance.currentUser != null) isUserConnected = true;
-  // }
 
   Stream<List<Plant>> readPlants() => FirebaseFirestore.instance
       .collection('plants')
@@ -43,7 +38,7 @@ class _PlantPageState extends State<PlantPage> {
       ? const AuthPage()
       : Scaffold(
           appBar: AppBar(
-            title: const Text('Toutes vos plantes répertoriées'),
+            title: const Text('Toutes vos graines répertoriées'),
             actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.account_circle),
@@ -71,32 +66,19 @@ class _PlantPageState extends State<PlantPage> {
               }
             },
           ),
-          floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddPlantPage(),
-                  ));
-            },
-          ),
         );
 
   Widget buildPlant(Plant plant) {
-    final user = FirebaseAuth.instance.currentUser!;
     return ListTile(
       onTap: () {
-        Navigator.pushNamed(context, EditPlantPage.routeName,
-            arguments: Plant(
-                id: plant.id,
-                userId: user.uid,
-                name: plant.name,
-                category: plant.category,
-                date: plant.date));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditPlantPage(currentPlant: plant)));
       },
-      title: Text(plant.name),
+      title: Text(plant.nom),
       subtitle: Text(plant.category),
+      // leading: Text(DateTime.fromMillisecondsSinceEpoch(plant.date).toString()),
     );
   }
 }

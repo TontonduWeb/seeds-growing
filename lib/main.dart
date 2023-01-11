@@ -1,13 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:seeds/pages/auth_page.dart';
-import 'package:seeds/pages/plant_page.dart';
-import 'package:seeds/pages/verify_email_page.dart';
-import 'package:seeds/pages/views/edit_plant_page.dart';
-import 'package:seeds/utils.dart';
+import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
+
+import 'package:seeds/pages/auth_page.dart';
+import 'package:seeds/pages/verify_email_page.dart';
+import 'package:seeds/utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,10 +31,6 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: const MyHomePage(title: 'Seeds Growing App'),
-        routes: {
-          EditPlantPage.routeName: (context) => const EditPlantPage(),
-          '/second': (context) => const PlantPage(),
-        },
       );
 }
 

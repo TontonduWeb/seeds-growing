@@ -1,70 +1,76 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 import 'package:seeds/models/plant.dart';
+// import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+// import 'package:intl/intl.dart';
 
 class EditPlantPage extends StatefulWidget {
-  const EditPlantPage({super.key});
-
-  static const routeName = '/extractArguments';
+  final Plant currentPlant;
+  const EditPlantPage({Key? key, required this.currentPlant}) : super(key: key);
 
   @override
   State<EditPlantPage> createState() => _EditPlantPageState();
 }
 
 class _EditPlantPageState extends State<EditPlantPage> {
-  final format = DateFormat("yyyy-MM-dd");
+  // final format = DateFormat("yyyy-MM-dd");
   @override
   Widget build(BuildContext context) {
-    final currentPlant = ModalRoute.of(context)!.settings.arguments as Plant;
-    final controllerName = TextEditingController(text: currentPlant.name);
-    final controllerCategorie =
-        TextEditingController(text: currentPlant.category);
-    final controllerDate =
-        TextEditingController(text: format.format(currentPlant.date));
+    final dureeDeGerminationController = TextEditingController(
+        text: widget.currentPlant.dureeDeGermination.toString());
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(currentPlant.name),
+        title: Text(widget.currentPlant.nom),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: <Widget>[
+          ListTile(
+            title: const Text('Ajuste la durée de germination'),
+            subtitle: Text(
+                'Durée de germination suggéré: ${widget.currentPlant.dureeDeGerminationFromRef}'),
+          ),
+          const SizedBox(height: 12),
           TextField(
-            controller: controllerName,
-            decoration: decoration("Nom du légume"),
+            controller: dureeDeGerminationController,
+            decoration: decoration("Durée de germination"),
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           ),
+
           const SizedBox(height: 24),
-          TextField(
-            controller: controllerCategorie,
-            decoration: decoration("Sa catégorie"),
-          ),
-          const SizedBox(height: 24),
-          DateTimeField(
-            controller: controllerDate,
-            decoration: decoration('Période de sémis'),
-            format: format,
-            onShowPicker: (context, currentValue) {
-              return showDatePicker(
-                  context: context,
-                  firstDate: DateTime(1900),
-                  initialDate: currentPlant.date,
-                  lastDate: DateTime(2100));
-            },
-          ),
+          // DateTimeField(
+          //   controller: controllerDate,
+          //   decoration: decoration('Période de sémis'),
+          //   format: format,
+          //   onShowPicker: (context, currentValue) {
+          //     return showDatePicker(
+          //         context: context,
+          //         firstDate: DateTime(1900),
+          //         initialDate: currentPlant.date,
+          //         lastDate: DateTime(2100));
+          //   },
+          // ),
           const SizedBox(height: 32),
           ElevatedButton.icon(
             label: const Text('Mettre à jour'),
             onPressed: () {
-              final editingPlant = currentPlant.copyWith(
-                name: controllerName.text,
-                category: controllerCategorie.text,
-                date: DateTime.parse(controllerDate.text),
+              final editingPlant = Plant(
+                id: widget.currentPlant.id,
+                nom: widget.currentPlant.nom,
+                userId: widget.currentPlant.userId,
+                category: widget.currentPlant.category,
+                dureeDeGermination:
+                    int.parse(dureeDeGerminationController.text),
+                dureeDeGerminationFromRef:
+                    widget.currentPlant.dureeDeGerminationFromRef,
+                // date: DateTime.parse(dateController.text),
               );
-              updatePlant(editingPlant, currentPlant);
+              updatePlant(editingPlant, widget.currentPlant);
               Navigator.pop(context);
             },
             icon: const Icon(Icons.update),
@@ -72,7 +78,7 @@ class _EditPlantPageState extends State<EditPlantPage> {
           ElevatedButton.icon(
             label: const Text('Supprimer'),
             onPressed: () {
-              deletePlant(id: currentPlant.id);
+              deletePlant(id: widget.currentPlant.id);
               Navigator.pop(context);
             },
             icon: const Icon(Icons.delete),
@@ -94,10 +100,11 @@ class _EditPlantPageState extends State<EditPlantPage> {
     FirebaseFirestore.instance.collection('plants').doc(id).delete();
   }
 
-  Future updatePlant(Plant updatingPlant, Plant currentPlant) async {
-    final docPlant =
-        FirebaseFirestore.instance.collection('plants').doc(currentPlant.id);
-    await docPlant.update(updatingPlant.toJson()).then(
+  Future updatePlant(Plant editingPlant, Plant currentPlant) async {
+    final docPlant = FirebaseFirestore.instance
+        .collection('plants')
+        .doc(widget.currentPlant.id);
+    await docPlant.update(editingPlant.toJson()).then(
         (value) => log("Success update"),
         onError: (e) => log("Error update"));
   }

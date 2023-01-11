@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:seeds/pages/views/add_plant_page.dart';
-import 'package:seeds/pages/views/edit_plant_page.dart';
 
 import '../models/plant.dart';
 
@@ -16,7 +15,7 @@ class PlantCategoryPage extends StatelessWidget {
 
     return FirebaseFirestore.instance
         .collection('plants')
-        .where("category", isEqualTo: category)
+        .where("Type", isEqualTo: category)
         .where("userId", isEqualTo: user.uid)
         .snapshots()
         .map((snapshot) =>
@@ -26,7 +25,7 @@ class PlantCategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text('Plantes $category'),
+          title: Text(category),
         ),
         body: StreamBuilder<List<Plant>>(
           stream: getRootPlants(),
@@ -48,9 +47,7 @@ class PlantCategoryPage extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddPlantPage(
-                    category: category,
-                  ),
+                  builder: (context) => const AddPlantPage(),
                 ));
           },
         ),
@@ -60,11 +57,11 @@ class PlantCategoryPage extends StatelessWidget {
         onTap: () {
           Navigator.pushNamed(
             context,
-            EditPlantPage.routeName,
+            AddPlantPage.routeName,
             arguments: plant,
           );
         },
-        title: Text(plant.name),
+        title: Text(plant.nom),
         subtitle: Text(plant.category),
       );
 }

@@ -1,46 +1,76 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:seeds/models/plantsRef.dart';
+import 'package:seeds/models/plant.dart';
+import 'package:seeds/pages/views/add_plant_page.dart';
 
-class PlantsRefPage extends StatefulWidget {
-  const PlantsRefPage({super.key});
+class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
 
   @override
-  State<PlantsRefPage> createState() => _PlantsRefPageState();
+  State<SearchPage> createState() => _PlantsRefPageState();
 }
 
-class _PlantsRefPageState extends State<PlantsRefPage> {
-  TextEditingController editingController = TextEditingController();
-  var plants = <PlantRef>[];
-  final plantsFromFirestore = <PlantRef>[];
+final user = FirebaseAuth.instance.currentUser!;
 
-  Stream<List<PlantRef>> readPlants() => FirebaseFirestore.instance
+class _PlantsRefPageState extends State<SearchPage> {
+  TextEditingController editingController = TextEditingController();
+  var plants = <Plant>[];
+  final plantsFromFirestore = <Plant>[];
+  final userPlants = <Plant>[];
+
+  // readUserPlants() => FirebaseFirestore.instance
+  //     .collection('plants')
+  //     .where('userId', isEqualTo: user.uid)
+  //     .snapshots()
+  //     .map((snapshot) => snapshot.docs
+  //         .map(
+  //           (doc) => Plant.fromJson(
+  //             {
+  //               ...doc.data(),
+  //               'id': doc.id,
+  //             },
+  //           ),
+  //         )
+  //         .toList());
+
+  Stream<List<Plant>> readPlantsFS() => FirebaseFirestore.instance
       .collection('plantsRef')
       .snapshots()
       .map((snapshot) =>
-          snapshot.docs.map((doc) => PlantRef.fromJson(doc.data())).toList());
+          snapshot.docs.map((doc) => Plant.fromJson(doc.data())).toList());
 
   @override
   void initState() {
+    // listenUserPlants();
     listenPlants();
     plants.addAll(plantsFromFirestore);
     super.initState();
   }
 
   void listenPlants() {
-    readPlants().listen((event) {
-      for (var element in event) {
-        plantsFromFirestore.add(element);
+    readPlantsFS().listen((listPlant) {
+      for (var plant in listPlant) {
+        plantsFromFirestore.add(plant);
         plantsFromFirestore.sort((a, b) => a.nom.compareTo(b.nom));
       }
     });
   }
 
+  // void listenUserPlants() {
+  //   readUserPlants().listen((listPlant) {
+  //     for (var userPlant in listPlant) {
+  //       userPlants.add(userPlant);
+  //       userPlants.sort((a, b) => a.nom.compareTo(b.nom));
+  //     }
+  //   });
+  // }
+
   void filterSearchResults(String query) {
-    List<PlantRef> dummySearchList = <PlantRef>[];
+    List<Plant> dummySearchList = <Plant>[];
     dummySearchList.addAll(plantsFromFirestore);
     if (query.isNotEmpty) {
-      List<PlantRef> dummyListData = <PlantRef>[];
+      List<Plant> dummyListData = <Plant>[];
       for (var item in dummySearchList) {
         if (item.nom.contains(query)) {
           dummyListData.add(item);
@@ -57,6 +87,16 @@ class _PlantsRefPageState extends State<PlantsRefPage> {
         plants.addAll(plantsFromFirestore);
       });
     }
+  }
+
+  void tapCallback(Plant plantRef) {
+    Navigator.pushNamed(context, AddPlantPage.routeName,
+        arguments: Plant(
+            id: plantRef.id,
+            userId: user.uid,
+            nom: plantRef.nom,
+            category: plantRef.category,
+            dureeDeGerminationFromRef: plantRef.dureeDeGerminationFromRef));
   }
 
   @override
@@ -88,6 +128,8 @@ class _PlantsRefPageState extends State<PlantsRefPage> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(plants[index].nom),
+                  subtitle: Text(plants[index].category),
+                  onTap: () => tapCallback(plants[index]),
                 );
               },
             ),

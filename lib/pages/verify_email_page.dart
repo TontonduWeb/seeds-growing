@@ -64,7 +64,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   ),
                   icon: const Icon(Icons.email, size: 32),
                   label: const Text(
-                    'Revoyer l\'email',
+                    'Renvoyer l\'email',
                     style: TextStyle(fontSize: 24),
                   ),
                   onPressed: canResentEmail ? sendVerificationEmail : null,

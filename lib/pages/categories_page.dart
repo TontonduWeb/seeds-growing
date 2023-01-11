@@ -11,13 +11,13 @@ class CategoriesPlant extends StatelessWidget {
       ),
       body: ListView(padding: const EdgeInsets.all(16), children: <Widget>[
         ElevatedButton.icon(
-          label: const Text("feuille"),
+          label: const Text('feuille'),
           onPressed: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const PlantCategoryPage(
-                    category: 'feuille',
+                    category: 'légume feuille',
                   ),
                 ));
           },
@@ -30,22 +30,37 @@ class CategoriesPlant extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const PlantCategoryPage(
-                    category: 'fruit',
+                    category: 'légume fruit',
                   ),
                 ));
           },
           icon: const Icon(Icons.trip_origin),
         ),
-        // ElevatedButton.icon(
-        //   label: const Text("fleur"),
-        //   onPressed: () {
-        //     Navigator.push(
-        //         context,
-        //         MaterialPageRoute(
-        //           builder: (context) => const FleurPlantPage(),
-        //         ));
-        //   },
-        //   icon: const Icon(Icons.local_florist),
-        // )
+        ElevatedButton.icon(
+          label: const Text("fleur"),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PlantCategoryPage(
+                    category: 'légume fleur',
+                  ),
+                ));
+          },
+          icon: const Icon(Icons.local_florist),
+        ),
+        ElevatedButton.icon(
+          label: const Text("racine"),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PlantCategoryPage(
+                    category: 'légume racine',
+                  ),
+                ));
+          },
+          icon: const Icon(Icons.grass),
+        ),
       ]));
 }

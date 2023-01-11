@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:seeds/pages/auth_page.dart';
 import 'package:seeds/pages/categories_page.dart';
-import 'package:seeds/pages/views/edit_plant_page.dart';
-import 'package:seeds/pages/views/plants_ref_page.dart';
+import 'package:seeds/pages/plant_page.dart';
+import 'package:seeds/pages/views/add_plant_page.dart';
+import 'package:seeds/pages/views/search_page.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -16,8 +18,8 @@ class LandingPage extends StatelessWidget {
       ),
       home: const MyHomePage(title: 'Seeds Growing App'),
       routes: {
-        EditPlantPage.routeName: (context) => const EditPlantPage(),
-        '/second': (context) => const PlantsRefPage(),
+        AddPlantPage.routeName: (context) => const AddPlantPage(),
+        '/second': (context) => const SearchPage(),
       },
     );
   }
@@ -59,7 +61,11 @@ class _MyHomePageState extends State<MyHomePage> {
             //   setState(() => _currentIndex = index);
             // },
             controller: _pageController,
-            children: const <Widget>[PlantsRefPage(), CategoriesPlant()],
+            children: const <Widget>[
+              PlantPage(),
+              CategoriesPlant(),
+              SearchPage()
+            ],
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _currentIndex,
@@ -76,10 +82,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: Icon(Icons.home_repair_service),
                 label: 'Boite',
               ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.forest),
-              //   label: 'Culture',
-              // ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Recherche',
+              ),
             ],
             selectedItemColor: Colors.amber[800],
           ),
