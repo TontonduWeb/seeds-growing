@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:seeds/models/plant.dart';
 import 'package:seeds/pages/views/add_plant_page.dart';
@@ -16,7 +17,7 @@ final user = FirebaseAuth.instance.currentUser!;
 class _PlantsRefPageState extends State<SearchPage> {
   TextEditingController editingController = TextEditingController();
   var plants = <Plant>[];
-  final plantsFromFirestore = <Plant>[];
+  final fsPlants = <Plant>[];
   final userPlants = <Plant>[];
 
   Stream<List<Plant>> readUserPlantsFS() => FirebaseFirestore.instance
@@ -44,15 +45,15 @@ class _PlantsRefPageState extends State<SearchPage> {
   void initState() {
     listenUserPlants();
     listenPlants();
-    plants.addAll(plantsFromFirestore);
+    plants.addAll(fsPlants);
     super.initState();
   }
 
   void listenPlants() {
     readPlantsFS().listen((listPlant) {
       for (var plant in listPlant) {
-        plantsFromFirestore.add(plant);
-        plantsFromFirestore.sort((a, b) => a.nom.compareTo(b.nom));
+        fsPlants.add(plant);
+        fsPlants.sort((a, b) => a.nom.compareTo(b.nom));
       }
     });
   }
@@ -67,18 +68,27 @@ class _PlantsRefPageState extends State<SearchPage> {
   }
 
   void filterSearchResults(String searchInput) {
+    List<Plant> inputPlantList = <Plant>[];
     if (searchInput.isNotEmpty) {
-      List<Plant> inputPlantList = <Plant>[];
-      for (var plantFS in plantsFromFirestore) {
-        if (plantFS.nom.contains(searchInput)) {
-          inputPlantList.add(plantFS);
-          for (var userPlant in userPlants) {
-            if (plantFS.nom == userPlant.nom) {
-              inputPlantList.remove(plantFS);
-            }
-          }
+      for (var fsPlant in fsPlants) {
+        if (fsPlant.nom.contains(searchInput)) {
+          inputPlantList.add(fsPlant);
         }
       }
+      inputPlantList.map((e) => e.nom).toList().forEach((element) {
+        userPlants.map((e) => e.nom).toList().forEach((userPlant) {
+          if (userPlant == element) {
+            inputPlantList.removeWhere((element) => userPlant == element.nom);
+          }
+        });
+      });
+      fsPlants.map((e) => e.nom).toList().forEach((element) {
+        userPlants.map((e) => e.nom).toList().forEach((userPlant) {
+          if (userPlant == element) {
+            fsPlants.removeWhere((element) => userPlant == element.nom);
+          }
+        });
+      });
       setState(() {
         plants.clear();
         plants.addAll(inputPlantList);
@@ -87,7 +97,7 @@ class _PlantsRefPageState extends State<SearchPage> {
     } else {
       setState(() {
         plants.clear();
-        plants.addAll(plantsFromFirestore);
+        plants.addAll(fsPlants);
       });
     }
   }

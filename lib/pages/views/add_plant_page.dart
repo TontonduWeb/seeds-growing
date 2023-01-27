@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seeds/models/plant.dart';
+
+// final plantAddedProvider = StateProvider((_) => false);
 
 class AddPlantPage extends StatefulWidget {
   const AddPlantPage({super.key});

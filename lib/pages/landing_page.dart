@@ -14,8 +14,26 @@ class LandingPage extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            primary: const Color.fromRGBO(30, 30, 30, 1.0),
+            secondary: const Color.fromRGBO(210, 96, 26, 1.0),
+            background: const Color.fromRGBO(255, 241, 225, 1.0),
+          ),
+          scaffoldBackgroundColor: const Color.fromRGBO(255, 241, 225, 1.0),
+          appBarTheme: const AppBarTheme(
+              color: Color.fromRGBO(255, 241, 225, 1.0),
+              titleTextStyle: TextStyle(
+                  color: Color.fromRGBO(0, 129, 133, 1.0), fontSize: 20)),
+          textTheme: const TextTheme(
+            titleMedium: TextStyle(color: Color.fromRGBO(30, 30, 30, 1.0)),
+            bodySmall: TextStyle(
+              color: Color.fromRGBO(210, 96, 26, 1.0),
+            ),
+          ),
+          buttonTheme: const ButtonThemeData(
+            buttonColor: Color.fromRGBO(210, 96, 26, 1.0),
+            // textTheme: ButtonTextTheme.primary,
+          )),
       home: const MyHomePage(title: 'Seeds Growing App'),
       routes: {
         AddPlantPage.routeName: (context) => const AddPlantPage(),
