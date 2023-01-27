@@ -1,7 +1,7 @@
 class Plant {
   final String id;
   final String userId;
-  final String nom;
+  late final String nom;
   final String category;
   final int? dureeDeGermination;
   final String dureeDeGerminationFromRef;

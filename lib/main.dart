@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +14,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(child: MyApp()),
+  );
 }
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -27,9 +30,15 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        // theme: ThemeData(
+        //     colorScheme: ColorScheme.fromSwatch().copyWith(
+        //       primary: const Color.fromRGBO(30, 30, 30, 1.0),
+        //       secondary: const Color.fromRGBO(210, 96, 26, 1.0),
+        //       background: const Color.fromRGBO(255, 241, 225, 1.0),
+        //     ),
+        //     scaffoldBackgroundColor: const Color.fromRGBO(255, 241, 225, 1.0),
+        //     appBarTheme:
+        //         const AppBarTheme(color: Color.fromRGBO(255, 241, 225, 1.0))),
         home: const MyHomePage(title: 'Seeds Growing App'),
       );
 }
