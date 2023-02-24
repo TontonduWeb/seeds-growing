@@ -6,6 +6,8 @@ import 'package:seeds/pages/plant_page.dart';
 import 'package:seeds/pages/views/add_plant_page.dart';
 import 'package:seeds/pages/views/search_page.dart';
 
+import 'calendar_page.dart';
+
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
 
@@ -14,26 +16,46 @@ class LandingPage extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSwatch().copyWith(
-            primary: const Color.fromRGBO(30, 30, 30, 1.0),
-            secondary: const Color.fromRGBO(210, 96, 26, 1.0),
-            background: const Color.fromRGBO(255, 241, 225, 1.0),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: const Color.fromRGBO(29, 60, 69, 1.0),
+          secondary: const Color.fromRGBO(210, 96, 26, 1.0),
+          background: const Color.fromRGBO(255, 241, 225, 1.0),
+        ),
+        scaffoldBackgroundColor: const Color.fromRGBO(255, 241, 225, 1.0),
+        appBarTheme: const AppBarTheme(
+          color: Color.fromRGBO(29, 60, 69, 1.0),
+          titleTextStyle: TextStyle(
+              color: Color.fromRGBO(255, 241, 225, 1.0), fontSize: 20),
+          iconTheme: IconThemeData(
+            color: Color.fromRGBO(255, 241, 225, 1.0),
           ),
-          scaffoldBackgroundColor: const Color.fromRGBO(255, 241, 225, 1.0),
-          appBarTheme: const AppBarTheme(
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Color.fromRGBO(29, 60, 69, 1.0),
+          unselectedItemColor: Color.fromRGBO(255, 241, 225, 1.0),
+        ),
+        textTheme: const TextTheme(
+          titleMedium: TextStyle(
+            color: Color.fromRGBO(29, 60, 69, 1.0),
+          ),
+          bodySmall: TextStyle(
+            color: Color.fromRGBO(210, 96, 26, 1.0),
+          ),
+        ),
+        buttonTheme: const ButtonThemeData(
+          buttonColor: Color.fromRGBO(210, 96, 26, 1.0),
+          // textTheme: ButtonTextTheme.primary,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromRGBO(29, 60, 69, 1.0),
+            textStyle: const TextStyle(
               color: Color.fromRGBO(255, 241, 225, 1.0),
-              titleTextStyle: TextStyle(
-                  color: Color.fromRGBO(0, 129, 133, 1.0), fontSize: 20)),
-          textTheme: const TextTheme(
-            titleMedium: TextStyle(color: Color.fromRGBO(30, 30, 30, 1.0)),
-            bodySmall: TextStyle(
-              color: Color.fromRGBO(210, 96, 26, 1.0),
             ),
           ),
-          buttonTheme: const ButtonThemeData(
-            buttonColor: Color.fromRGBO(210, 96, 26, 1.0),
-            // textTheme: ButtonTextTheme.primary,
-          )),
+        ),
+      ),
       home: const MyHomePage(title: 'Seeds Growing App'),
       routes: {
         AddPlantPage.routeName: (context) => const AddPlantPage(),
@@ -75,14 +97,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ? const AuthPage()
       : Scaffold(
           body: PageView(
-            // onPageChanged: (index) {
-            //   setState(() => _currentIndex = index);
-            // },
             controller: _pageController,
             children: const <Widget>[
               PlantPage(),
               CategoriesPlant(),
-              SearchPage()
+              SearchPage(),
+              CalendarPage(),
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
@@ -103,6 +123,10 @@ class _MyHomePageState extends State<MyHomePage> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
                 label: 'Recherche',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.calendar_today),
+                label: 'Calendrier',
               ),
             ],
             selectedItemColor: Colors.amber[800],
