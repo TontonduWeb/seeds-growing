@@ -44,6 +44,10 @@ dependencies:
   datetime_picker_formfield: ^2.0.1
   firebase_auth: ^4.2.1
   email_validator: ^2.1.17
+  syncfusion_flutter_calendar: ^20.4.44
+  flutter_localizations:
+    sdk: flutter
+  syncfusion_localizations: ^20.4.51
 
 dev_dependencies:
   flutter_test:
