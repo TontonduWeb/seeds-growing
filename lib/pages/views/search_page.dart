@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:seeds/models/plant.dart';
 import 'package:seeds/pages/views/add_plant_page.dart';
 
+import '../../models/plant_ref.dart';
+
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
@@ -16,8 +18,8 @@ final user = FirebaseAuth.instance.currentUser!;
 
 class _PlantsRefPageState extends State<SearchPage> {
   TextEditingController editingController = TextEditingController();
-  var plants = <Plant>[];
-  final fsPlants = <Plant>[];
+  var plants = <PlantRef>[];
+  final fsPlants = <PlantRef>[];
   final userPlants = <Plant>[];
 
   Stream<List<Plant>> readUserPlantsFS() => FirebaseFirestore.instance
@@ -35,11 +37,11 @@ class _PlantsRefPageState extends State<SearchPage> {
           )
           .toList());
 
-  Stream<List<Plant>> readPlantsFS() => FirebaseFirestore.instance
+  Stream<List<PlantRef>> readPlantsFS() => FirebaseFirestore.instance
       .collection('plantsRef')
       .snapshots()
       .map((snapshot) =>
-          snapshot.docs.map((doc) => Plant.fromJson(doc.data())).toList());
+          snapshot.docs.map((doc) => PlantRef.fromJson(doc.data())).toList());
 
   @override
   void initState() {
@@ -68,7 +70,7 @@ class _PlantsRefPageState extends State<SearchPage> {
   }
 
   void filterSearchResults(String searchInput) {
-    List<Plant> inputPlantList = <Plant>[];
+    List<PlantRef> inputPlantList = <PlantRef>[];
     if (searchInput.isNotEmpty) {
       for (var fsPlant in fsPlants) {
         if (fsPlant.nom.contains(searchInput)) {
@@ -102,7 +104,7 @@ class _PlantsRefPageState extends State<SearchPage> {
     }
   }
 
-  void selectPlant(Plant plantRef) {
+  void selectPlant(PlantRef plantRef) {
     Navigator.pushNamed(context, AddPlantPage.routeName,
         arguments: Plant(
             id: plantRef.id,

@@ -65,6 +65,8 @@ class _AddPlantPageState extends State<AddPlantPage> {
                     int.parse(dureeDeGerminationController.text),
                 dureeDeGerminationFromRef:
                     currentPlant.dureeDeGerminationFromRef,
+                startSeedlingUnderGreenHouse:
+                    currentPlant.startSeedlingUnderGreenHouse,
                 // date: DateTime.parse(dateController.text),
               );
               setPlant(settingPlant: settingPlant);

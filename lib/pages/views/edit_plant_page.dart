@@ -37,7 +37,7 @@ class _EditPlantPageState extends State<EditPlantPage> {
           const SizedBox(height: 12),
           TextField(
             controller: dureeDeGerminationController,
-            decoration: decoration("Durée de germination"),
+            decoration: decoration("Durée de germination en nombre de jours"),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           ),
@@ -68,6 +68,8 @@ class _EditPlantPageState extends State<EditPlantPage> {
                     int.parse(dureeDeGerminationController.text),
                 dureeDeGerminationFromRef:
                     widget.currentPlant.dureeDeGerminationFromRef,
+                isSeedlingUnderGreenhouse:
+                    widget.currentPlant.isSeedlingUnderGreenhouse,
                 // date: DateTime.parse(dateController.text),
               );
               updatePlant(editingPlant, widget.currentPlant);
@@ -77,12 +79,70 @@ class _EditPlantPageState extends State<EditPlantPage> {
           ),
           ElevatedButton.icon(
             label: const Text('Supprimer'),
+            icon: const Icon(Icons.delete),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(210, 96, 26, 1.0)),
             onPressed: () {
               deletePlant(id: widget.currentPlant.id);
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.delete),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          ),
+          ElevatedButton.icon(
+            label: const Text(
+              'Lancer la germination',
+              style: TextStyle(color: Color.fromRGBO(29, 60, 69, 1.0)),
+            ),
+            icon:
+                const Icon(Icons.start, color: Color.fromRGBO(29, 60, 69, 1.0)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromRGBO(255, 241, 225, 1.0),
+            ),
+            onPressed: () {
+              final isSeedlingUnderGreenhouse = Plant(
+                id: widget.currentPlant.id,
+                nom: widget.currentPlant.nom,
+                userId: widget.currentPlant.userId,
+                category: widget.currentPlant.category,
+                dureeDeGermination:
+                    int.parse(dureeDeGerminationController.text),
+                dureeDeGerminationFromRef:
+                    widget.currentPlant.dureeDeGerminationFromRef,
+                // date: DateTime.parse(dateController.text),
+                isSeedlingUnderGreenhouse: true,
+                startSeedlingUnderGreenHouse: DateTime.now(),
+              );
+              updateStartSeedlingUnderGreenHouse(isSeedlingUnderGreenhouse);
+              Navigator.pop(context);
+            },
+          ),
+          ElevatedButton.icon(
+            label: const Text(
+              'Arrêter la germination',
+              style: TextStyle(color: Color.fromRGBO(210, 96, 26, 1.0)),
+            ),
+            icon: const Icon(
+              Icons.stop,
+              color: Color.fromRGBO(210, 96, 26, 1.0),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromRGBO(255, 241, 225, 1.0),
+            ),
+            onPressed: () {
+              final isSeedlingUnderGreenhouse = Plant(
+                id: widget.currentPlant.id,
+                nom: widget.currentPlant.nom,
+                userId: widget.currentPlant.userId,
+                category: widget.currentPlant.category,
+                dureeDeGermination:
+                    int.parse(dureeDeGerminationController.text),
+                dureeDeGerminationFromRef:
+                    widget.currentPlant.dureeDeGerminationFromRef,
+                // date: DateTime.parse(dateController.text),
+                isSeedlingUnderGreenhouse: false,
+              );
+              updateStopSeedlingUnderGreenHouse(isSeedlingUnderGreenhouse);
+              Navigator.pop(context);
+            },
           ),
         ],
       ),
@@ -98,6 +158,26 @@ class _EditPlantPageState extends State<EditPlantPage> {
     required String id,
   }) async {
     FirebaseFirestore.instance.collection('plants').doc(id).delete();
+  }
+
+  Future updateStartSeedlingUnderGreenHouse(
+      Plant startSeedlingUnderGreenHouse) async {
+    final docPlant = FirebaseFirestore.instance
+        .collection('plants')
+        .doc(widget.currentPlant.id);
+    await docPlant.update(startSeedlingUnderGreenHouse.toJson()).then(
+        (value) => log("Success startSeedlingUnderGreenHouse"),
+        onError: (e) => log("Error startSeedlingUnderGreenHouse"));
+  }
+
+  Future updateStopSeedlingUnderGreenHouse(
+      Plant stopSeedlingUnderGreenHouse) async {
+    final docPlant = FirebaseFirestore.instance
+        .collection('plants')
+        .doc(widget.currentPlant.id);
+    await docPlant.update(stopSeedlingUnderGreenHouse.toJson()).then(
+        (value) => log("Success stopSeedlingUnderGreenHouse"),
+        onError: (e) => log("Error stopSeedlingUnderGreenHouse"));
   }
 
   Future updatePlant(Plant editingPlant, Plant currentPlant) async {
