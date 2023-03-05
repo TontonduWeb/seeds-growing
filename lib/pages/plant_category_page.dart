@@ -41,16 +41,6 @@ class PlantCategoryPage extends StatelessWidget {
             }
           },
         ),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AddPlantPage(),
-                ));
-          },
-        ),
       );
 
   Widget buildPlant(Plant plant, BuildContext context) => ListTile(

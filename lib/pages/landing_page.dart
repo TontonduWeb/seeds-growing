@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:seeds/pages/auth_page.dart';
 import 'package:seeds/pages/categories_page.dart';
 import 'package:seeds/pages/plant_page.dart';
@@ -15,6 +15,14 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('fr'),
+      ],
+      locale: const Locale('fr'),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
           primary: const Color.fromRGBO(29, 60, 69, 1.0),

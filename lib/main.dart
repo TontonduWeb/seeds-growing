@@ -30,15 +30,48 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        // theme: ThemeData(
-        //     colorScheme: ColorScheme.fromSwatch().copyWith(
-        //       primary: const Color.fromRGBO(30, 30, 30, 1.0),
-        //       secondary: const Color.fromRGBO(210, 96, 26, 1.0),
-        //       background: const Color.fromRGBO(255, 241, 225, 1.0),
-        //     ),
-        //     scaffoldBackgroundColor: const Color.fromRGBO(255, 241, 225, 1.0),
-        //     appBarTheme:
-        //         const AppBarTheme(color: Color.fromRGBO(255, 241, 225, 1.0))),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            primary: const Color.fromRGBO(29, 60, 69, 1.0),
+            secondary: const Color.fromRGBO(210, 96, 26, 1.0),
+            background: const Color.fromRGBO(255, 241, 225, 1.0),
+          ),
+          fontFamily: 'Rubik',
+          scaffoldBackgroundColor: const Color.fromRGBO(255, 241, 225, 1.0),
+          appBarTheme: const AppBarTheme(
+            color: Color.fromRGBO(29, 60, 69, 1.0),
+            titleTextStyle: TextStyle(
+                color: Color.fromRGBO(255, 241, 225, 1.0), fontSize: 20),
+            iconTheme: IconThemeData(
+              color: Color.fromRGBO(255, 241, 225, 1.0),
+            ),
+          ),
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Color.fromRGBO(29, 60, 69, 1.0),
+            unselectedItemColor: Color.fromRGBO(255, 241, 225, 1.0),
+          ),
+          textTheme: const TextTheme(
+            titleMedium: TextStyle(
+              color: Color.fromRGBO(29, 60, 69, 1.0),
+            ),
+            bodySmall: TextStyle(
+              color: Color.fromRGBO(210, 96, 26, 1.0),
+            ),
+          ),
+          buttonTheme: const ButtonThemeData(
+            buttonColor: Color.fromRGBO(210, 96, 26, 1.0),
+            // textTheme: ButtonTextTheme.primary,
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromRGBO(29, 60, 69, 1.0),
+              textStyle: const TextStyle(
+                color: Color.fromRGBO(255, 241, 225, 1.0),
+              ),
+            ),
+          ),
+        ),
         home: const MyHomePage(title: 'Seeds Growing App'),
       );
 }

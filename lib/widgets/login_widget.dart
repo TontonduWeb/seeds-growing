@@ -27,66 +27,75 @@ class _LoginWidgetState extends State<LoginWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 40),
-            TextField(
-              controller: emailController,
-              cursorColor: Colors.white,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            const SizedBox(height: 4),
-            TextField(
-              controller: passwordController,
-              textInputAction: TextInputAction.done,
-              decoration: const InputDecoration(labelText: 'Mot de passe'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(50),
+  Widget build(BuildContext context) => Scaffold(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 60),
+              Image.asset('images/logo.png', width: 200, height: 200),
+              const SizedBox(height: 20),
+              const Text('Connectez-vous !',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 32, fontFamily: 'Rubik')),
+              const SizedBox(height: 40),
+              TextField(
+                controller: emailController,
+                cursorColor: Colors.black,
+                textInputAction: TextInputAction.next,
+                decoration: const InputDecoration(labelText: 'Email'),
               ),
-              icon: const Icon(Icons.lock_open, size: 32),
-              label: const Text(
-                'Se connecter',
-                style: TextStyle(fontSize: 24),
+              const SizedBox(height: 4),
+              TextField(
+                controller: passwordController,
+                cursorColor: Colors.black,
+                textInputAction: TextInputAction.done,
+                decoration: const InputDecoration(labelText: 'Mot de passe'),
+                obscureText: true,
               ),
-              onPressed: signIn,
-            ),
-            const SizedBox(height: 24),
-            GestureDetector(
-              child: Text(
-                'Mot de passe oublié ?',
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontSize: 20,
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50),
                 ),
+                icon: const Icon(Icons.lock_open, size: 32),
+                label: const Text(
+                  'Se connecter',
+                  style: TextStyle(fontSize: 24),
+                ),
+                onPressed: signIn,
               ),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const ForgotPasswordPage(),
-              )),
-            ),
-            const SizedBox(height: 16),
-            RichText(
-                text: TextSpan(
-                    style: const TextStyle(color: Colors.black),
-                    text: 'Pas encore de compte ',
-                    children: [
-                  TextSpan(
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = widget.onClickedSignUp,
-                      text: 'S\'inscrire',
-                      style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: Theme.of(context).colorScheme.secondary))
-                ]))
-          ],
+              const SizedBox(height: 24),
+              GestureDetector(
+                child: Text(
+                  'Mot de passe oublié ?',
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 20,
+                  ),
+                ),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const ForgotPasswordPage(),
+                )),
+              ),
+              const SizedBox(height: 16),
+              RichText(
+                  text: TextSpan(
+                      style: const TextStyle(color: Colors.black),
+                      text: 'Pas encore de compte ',
+                      children: [
+                    TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = widget.onClickedSignUp,
+                        text: 'S\'inscrire',
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Theme.of(context).colorScheme.secondary))
+                  ]))
+            ],
+          ),
         ),
       );
 

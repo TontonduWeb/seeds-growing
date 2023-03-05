@@ -31,75 +31,77 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
+  Widget build(BuildContext context) => Scaffold(
+          body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
           key: formKey,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const SizedBox(height: 60),
-            const FlutterLogo(
-              size: 120,
-            ),
-            const SizedBox(height: 20),
-            const Text('Bienvenue',
-                textAlign: TextAlign.center, style: TextStyle(fontSize: 32)),
-            const SizedBox(height: 40),
-            TextFormField(
-              controller: emailController,
-              cursorColor: Colors.white,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(labelText: 'Email'),
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (email) =>
-                  email != null && !EmailValidator.validate(email)
-                      ? 'Entrer un email valide'
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const SizedBox(height: 60),
+                Image.asset('images/logo.png', width: 200, height: 200),
+                const SizedBox(height: 20),
+                const Text('Bienvenue',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 32)),
+                const SizedBox(height: 40),
+                TextFormField(
+                  controller: emailController,
+                  cursorColor: Colors.black,
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (email) =>
+                      email != null && !EmailValidator.validate(email)
+                          ? 'Entrer un email valide'
+                          : null,
+                ),
+                const SizedBox(height: 4),
+                TextFormField(
+                  controller: passwordController,
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(labelText: 'Mot de passe'),
+                  obscureText: true,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) => value != null && value.length < 6
+                      ? 'Minimum 6 charactères'
                       : null,
-            ),
-            const SizedBox(height: 4),
-            TextFormField(
-              controller: passwordController,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(labelText: 'Mot de passe'),
-              obscureText: true,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (value) => value != null && value.length < 6
-                  ? 'Minimum 6 charactères'
-                  : null,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50)),
-              icon: const Icon(Icons.arrow_forward, size: 32),
-              label: const Text(
-                'S\'inscrire',
-                style: TextStyle(fontSize: 24),
-              ),
-              onPressed: signUp,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            RichText(
-              text: TextSpan(
-                style: const TextStyle(color: Colors.black),
-                text: 'Déjà un compte ',
-                children: [
-                  TextSpan(
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = widget.onClickedSignIn,
-                    text: 'Se connecter',
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50)),
+                  icon: const Icon(Icons.arrow_forward, size: 32),
+                  label: const Text(
+                    'S\'inscrire',
+                    style: TextStyle(fontSize: 24),
                   ),
-                ],
-              ),
-            ),
-          ]),
+                  onPressed: signUp,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                RichText(
+                  text: TextSpan(
+                    style: const TextStyle(color: Colors.black),
+                    text: 'Déjà un compte ',
+                    children: [
+                      TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = widget.onClickedSignIn,
+                        text: 'Se connecter',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
         ),
-      );
+      ));
 
   Future signUp() async {
     final isValid = formKey.currentState!.validate();

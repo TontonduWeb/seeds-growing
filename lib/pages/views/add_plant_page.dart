@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seeds/models/plant.dart';
 
@@ -38,6 +39,8 @@ class _AddPlantPageState extends State<AddPlantPage> {
           TextField(
             controller: dureeDeGerminationController,
             decoration: decoration("Durée de germination"),
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           ),
           const SizedBox(height: 24),
           // DateTimeField(
