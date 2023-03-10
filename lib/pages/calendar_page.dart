@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -11,13 +10,20 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  List<SemisInterieur> _semisInterieur = <SemisInterieur>[];
+  // List<Semis> _semisInterieur = <Semis>[];
+  List<Semis> _semisExterieur = <Semis>[];
+  List<CalendarResource> resources = <CalendarResource>[];
 
   @override
   void initState() {
     super.initState();
-    getTests().then((appointments) => setState(() {
-          _semisInterieur = appointments;
+    // getSemisInterieur().then((object) => setState(() {
+    //       _semisInterieur = object['semisInterieur'] as List<Semis>;
+    //       resources = object['resourcesColl'] as List<CalendarResource>;
+    //     }));
+    getSemisExterieur().then((object) => setState(() {
+          _semisExterieur = object['semisExterieur'] as List<Semis>;
+          resources = object['resourcesColl'] as List<CalendarResource>;
         }));
   }
 
@@ -27,81 +33,85 @@ class _CalendarPageState extends State<CalendarPage> {
           title: const Text('Calendrier'),
         ),
         body: SfCalendar(
-          view: CalendarView.schedule,
-          monthViewSettings: const MonthViewSettings(showAgenda: true),
-          firstDayOfWeek: 1,
-          allowedViews: const <CalendarView>[
+          view: CalendarView.timelineMonth,
+          allowedViews: const [
             CalendarView.schedule,
-            CalendarView.month,
+            CalendarView.timelineMonth
           ],
-          scheduleViewSettings: const ScheduleViewSettings(
-            monthHeaderSettings: MonthHeaderSettings(
-              monthFormat: 'MMMM, yyyy',
-              height: 100,
-              textAlign: TextAlign.left,
-              backgroundColor: Color.fromRGBO(29, 60, 69, 1.0),
-              monthTextStyle: TextStyle(
-                  color: Color.fromRGBO(255, 241, 225, 1.0),
-                  fontSize: 25,
-                  fontWeight: FontWeight.w400),
-            ),
-            weekHeaderSettings: WeekHeaderSettings(
-              startDateFormat: 'dd MMM ',
-              endDateFormat: 'dd MMM, yy',
-              height: 50,
-              textAlign: TextAlign.center,
-              backgroundColor: Color.fromRGBO(210, 96, 26, 1.0),
-              weekTextStyle: TextStyle(
-                color: Color.fromRGBO(255, 241, 225, 1.0),
-                fontWeight: FontWeight.w400,
-                fontSize: 15,
-              ),
-            ),
-          ),
           showDatePickerButton: true,
-          timeSlotViewSettings: const TimeSlotViewSettings(
-              dayFormat: 'EEE', startHour: 24, endHour: 24),
-          dataSource: AppointmentDataSource(_semisInterieur),
+          dataSource: SemisExterieurDataSource(_semisExterieur, resources),
+          resourceViewSettings: const ResourceViewSettings(showAvatar: true),
         ),
       );
 }
 
-final user = FirebaseAuth.instance.currentUser!;
+// Future<Map<String, List>> getSemisInterieur() async {
+//   List<Semis> semisInterieur = <Semis>[];
+//   List<CalendarResource> resourcesColl = <CalendarResource>[];
 
-// List<Meeting> _getDataSource() {
-//     final List<Meeting> meetings = <Meeting>[];
-//     final DateTime today = DateTime.now();
-//     final DateTime startTime =
-//         DateTime(today.year, today.month, today.day, 9, 0, 0);
-//     final DateTime endTime = startTime.add(const Duration(hours: 2));
-//     meetings.add(Meeting(
-//         'Conference', startTime, endTime, const Color(0xFF0F8644), false));
-//     return meetings;
-//   }
+//   final semisInterieurCollection =
+//       FirebaseFirestore.instance.collection('semis_interieur_ref');
 
-Future<List<SemisInterieur>> getTests() async {
-  List<SemisInterieur> semisInterieur = <SemisInterieur>[];
-  final testCollection =
-      FirebaseFirestore.instance.collection('semis_interieur_ref');
+//   final semisInterieurs = await semisInterieurCollection.get();
 
-  final tests = await testCollection.get();
+//   semisInterieur = semisInterieurs.docs
+//       .map(
+//         (doc) => Semis(
+//           doc['legumes'],
+//           doc['recurrence_semis_interieur'].toDate(),
+//           Color(doc['color']),
+//           doc['isAllDay'],
+//           ['1'],
+//         ),
+//       )
+//       .toList();
 
-  semisInterieur = tests.docs
+//   resourcesColl.add(
+//     CalendarResource(
+//       displayName: 'Intérieur',
+//       color: const Color.fromARGB(255, 46, 212, 104),
+//       id: '1',
+//     ),
+//   );
+//   return {'semisInterieur': semisInterieur, 'resourcesColl': resourcesColl};
+// }
+
+Future<Map<String, List>> getSemisExterieur() async {
+  List<Semis> semisExterieur = <Semis>[];
+  List<CalendarResource> resourcesColl = <CalendarResource>[];
+
+  final semisExterieurCollection =
+      FirebaseFirestore.instance.collection('semis_exterieur_ref');
+
+  final semisExterieurs = await semisExterieurCollection.get();
+
+  semisExterieur = semisExterieurs.docs
       .map(
-        (doc) => SemisInterieur(
+        (doc) => Semis(
           doc['legumes'],
-          doc['recurrence_semis_interieur'].toDate(),
+          doc['recurrence_semis_extérieur'].toDate(),
           Color(doc['color']),
           doc['isAllDay'],
+          ['1'],
         ),
       )
       .toList();
-  return semisInterieur;
+
+  resourcesColl.add(
+    CalendarResource(
+      displayName: 'Exterieux',
+      color: const Color.fromRGBO(210, 96, 26, 1.0),
+      id: '1',
+    ),
+  );
+
+  return {'semisExterieur': semisExterieur, 'resourcesColl': resourcesColl};
 }
 
-class AppointmentDataSource extends CalendarDataSource {
-  AppointmentDataSource(List<SemisInterieur> semisInterieur) {
-    appointments = semisInterieur;
+class SemisExterieurDataSource extends CalendarDataSource {
+  SemisExterieurDataSource(
+      List<Semis> semisExterieur, List<CalendarResource> resourcesColl) {
+    appointments = semisExterieur;
   }
 
   @override
@@ -130,26 +140,55 @@ class AppointmentDataSource extends CalendarDataSource {
   bool isAllDay(int index) {
     return appointments![index].isAllDay = true;
   }
-
-  // @override
-  // String getRecurrenceRule(int index) {
-  //   return appointments![index].recurrenceRule = 'FREQ=YEARLY;INTERVAL=1';
-  // }
-
 }
 
-class SemisInterieur {
-  SemisInterieur(
+// class SemisInterieurDataSource extends CalendarDataSource {
+//   SemisInterieurDataSource(
+//       List<Semis> semisInterieur, List<CalendarResource> resourcesColl) {
+//     appointments = semisInterieur;
+//     resources = resourcesColl;
+//   }
+
+//   @override
+//   DateTime getStartTime(int index) {
+//     return appointments![index].recurrence_semis_interieur;
+//   }
+
+//   @override
+//   DateTime getEndTime(int index) {
+//     return appointments![index]
+//         .recurrence_semis_interieur
+//         .add(const Duration(days: 30));
+//   }
+
+//   @override
+//   String getSubject(int index) {
+//     return appointments![index].legumes;
+//   }
+
+//   @override
+//   Color getColor(int index) {
+//     return appointments![index].color;
+//   }
+
+//   @override
+//   bool isAllDay(int index) {
+//     return appointments![index].isAllDay = true;
+//   }
+// }
+
+class Semis {
+  Semis(
     this.legumes,
     this.recurrence_semis_interieur,
     this.color,
     this.isAllDay,
-    // this.recurrenceRule,
+    this.resourceIds,
   );
 
   String legumes;
   DateTime recurrence_semis_interieur;
   Color color;
   bool isAllDay;
-  // String recurrenceRule;
+  List<String> resourceIds;
 }
