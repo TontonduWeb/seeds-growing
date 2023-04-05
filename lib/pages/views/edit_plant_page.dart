@@ -157,13 +157,13 @@ class _EditPlantPageState extends State<EditPlantPage> {
   Future deletePlant({
     required String id,
   }) async {
-    FirebaseFirestore.instance.collection('plants').doc(id).delete();
+    FirebaseFirestore.instance.collection('userPlante').doc(id).delete();
   }
 
   Future updateStartSeedlingUnderGreenHouse(
       Plant startSeedlingUnderGreenHouse) async {
     final docPlant = FirebaseFirestore.instance
-        .collection('plants')
+        .collection('userPlante')
         .doc(widget.currentPlant.id);
     await docPlant.update(startSeedlingUnderGreenHouse.toJson()).then(
         (value) => log("Success startSeedlingUnderGreenHouse"),
@@ -173,7 +173,7 @@ class _EditPlantPageState extends State<EditPlantPage> {
   Future updateStopSeedlingUnderGreenHouse(
       Plant stopSeedlingUnderGreenHouse) async {
     final docPlant = FirebaseFirestore.instance
-        .collection('plants')
+        .collection('userPlante')
         .doc(widget.currentPlant.id);
     await docPlant.update(stopSeedlingUnderGreenHouse.toJson()).then(
         (value) => log("Success stopSeedlingUnderGreenHouse"),
@@ -182,7 +182,7 @@ class _EditPlantPageState extends State<EditPlantPage> {
 
   Future updatePlant(Plant editingPlant, Plant currentPlant) async {
     final docPlant = FirebaseFirestore.instance
-        .collection('plants')
+        .collection('userPlante')
         .doc(widget.currentPlant.id);
     await docPlant.update(editingPlant.toJson()).then(
         (value) => log("Success update"),

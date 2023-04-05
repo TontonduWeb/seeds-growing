@@ -14,7 +14,7 @@ class PlantCategoryPage extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser!;
 
     return FirebaseFirestore.instance
-        .collection('plants')
+        .collection('userPlante')
         .where("Type", isEqualTo: category)
         .where("userId", isEqualTo: user.uid)
         .snapshots()

@@ -89,7 +89,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
       );
 
   Future setPlant({required Plant settingPlant}) async {
-    final docPlant = FirebaseFirestore.instance.collection('plants').doc();
+    final docPlant = FirebaseFirestore.instance.collection('userPlante').doc();
     await docPlant
         .set(settingPlant.toJson())
         .then((value) => log("Success set"), onError: (e) => log("Error set"));

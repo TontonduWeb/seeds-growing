@@ -22,7 +22,7 @@ class _PlantsRefPageState extends State<SearchPage> {
   final userPlants = <Plant>[];
 
   Stream<List<Plant>> readUserPlantsFS() => FirebaseFirestore.instance
-      .collection('plants')
+      .collection('userPlante')
       .where('userId', isEqualTo: user.uid)
       .snapshots()
       .map((snapshot) => snapshot.docs
@@ -37,7 +37,7 @@ class _PlantsRefPageState extends State<SearchPage> {
           .toList());
 
   Stream<List<PlantRef>> readPlantsFS() => FirebaseFirestore.instance
-      .collection('plantsRef')
+      .collection('plante')
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => PlantRef.fromJson(doc.data())).toList());

@@ -10,19 +10,18 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  // List<Semis> _semisInterieur = <Semis>[];
+  List<Semis> _semisInterieur = <Semis>[];
   List<Semis> _semisExterieur = <Semis>[];
+  List<Semis> _plantations = <Semis>[];
   List<CalendarResource> resources = <CalendarResource>[];
 
   @override
   void initState() {
     super.initState();
-    // getSemisInterieur().then((object) => setState(() {
-    //       _semisInterieur = object['semisInterieur'] as List<Semis>;
-    //       resources = object['resourcesColl'] as List<CalendarResource>;
-    //     }));
-    getSemisExterieur().then((object) => setState(() {
+    getSemis().then((object) => setState(() {
+          _semisInterieur = object['semisInterieur'] as List<Semis>;
           _semisExterieur = object['semisExterieur'] as List<Semis>;
+          _plantations = object['plantations'] as List<Semis>;
           resources = object['resourcesColl'] as List<CalendarResource>;
         }));
   }
@@ -35,55 +34,35 @@ class _CalendarPageState extends State<CalendarPage> {
         body: SfCalendar(
           view: CalendarView.timelineMonth,
           allowedViews: const [
-            CalendarView.schedule,
-            CalendarView.timelineMonth
+            CalendarView.timelineDay,
+            CalendarView.timelineWeek,
+            CalendarView.timelineMonth,
           ],
           showDatePickerButton: true,
-          dataSource: SemisExterieurDataSource(_semisExterieur, resources),
-          resourceViewSettings: const ResourceViewSettings(showAvatar: true),
+          dataSource: SemisDataSource(
+              _semisExterieur, _semisInterieur, _plantations, resources),
+          resourceViewSettings: const ResourceViewSettings(
+              showAvatar: true, visibleResourceCount: 3),
         ),
       );
 }
 
-// Future<Map<String, List>> getSemisInterieur() async {
-//   List<Semis> semisInterieur = <Semis>[];
-//   List<CalendarResource> resourcesColl = <CalendarResource>[];
-
-//   final semisInterieurCollection =
-//       FirebaseFirestore.instance.collection('semis_interieur_ref');
-
-//   final semisInterieurs = await semisInterieurCollection.get();
-
-//   semisInterieur = semisInterieurs.docs
-//       .map(
-//         (doc) => Semis(
-//           doc['legumes'],
-//           doc['recurrence_semis_interieur'].toDate(),
-//           Color(doc['color']),
-//           doc['isAllDay'],
-//           ['1'],
-//         ),
-//       )
-//       .toList();
-
-//   resourcesColl.add(
-//     CalendarResource(
-//       displayName: 'Intérieur',
-//       color: const Color.fromARGB(255, 46, 212, 104),
-//       id: '1',
-//     ),
-//   );
-//   return {'semisInterieur': semisInterieur, 'resourcesColl': resourcesColl};
-// }
-
-Future<Map<String, List>> getSemisExterieur() async {
+Future<Map<String, List>> getSemis() async {
   List<Semis> semisExterieur = <Semis>[];
+  List<Semis> semisInterieur = <Semis>[];
+  List<Semis> plantation = <Semis>[];
   List<CalendarResource> resourcesColl = <CalendarResource>[];
 
   final semisExterieurCollection =
       FirebaseFirestore.instance.collection('semis_exterieur_ref');
+  final semisInterieurCollection =
+      FirebaseFirestore.instance.collection('semis_interieur_ref');
+  final plantationsCollection =
+      FirebaseFirestore.instance.collection('plantation_ref');
 
   final semisExterieurs = await semisExterieurCollection.get();
+  final semisInterieurs = await semisInterieurCollection.get();
+  final plantations = await plantationsCollection.get();
 
   semisExterieur = semisExterieurs.docs
       .map(
@@ -97,33 +76,77 @@ Future<Map<String, List>> getSemisExterieur() async {
       )
       .toList();
 
+  semisInterieur = semisInterieurs.docs
+      .map(
+        (doc) => Semis(
+          doc['legumes'],
+          doc['recurrence_semis_interieur'].toDate(),
+          Color(doc['color']),
+          doc['isAllDay'],
+          ['2'],
+        ),
+      )
+      .toList();
+
+  plantation = plantations.docs
+      .map(
+        (doc) => Semis(
+            doc['legumes'],
+            doc['recurrence_plantation_exterieur'].toDate(),
+            Color(doc['color']),
+            true,
+            ['3']),
+      )
+      .toList();
+
   resourcesColl.add(
     CalendarResource(
-      displayName: 'Exterieux',
-      color: const Color.fromRGBO(210, 96, 26, 1.0),
+      displayName: 'Exterieur',
+      color: const Color(0xff5ba87f),
       id: '1',
     ),
   );
+  resourcesColl.add(
+    CalendarResource(
+      displayName: 'Interieur',
+      color: const Color(0xff28a5a8),
+      id: '2',
+    ),
+  );
+  resourcesColl.add(
+    CalendarResource(
+      displayName: 'Plantation',
+      color: const Color(0xff396ba8),
+      id: '3',
+    ),
+  );
 
-  return {'semisExterieur': semisExterieur, 'resourcesColl': resourcesColl};
+  return {
+    'semisExterieur': semisExterieur,
+    'semisInterieur': semisInterieur,
+    'plantations': plantation,
+    'resourcesColl': resourcesColl
+  };
 }
 
-class SemisExterieurDataSource extends CalendarDataSource {
-  SemisExterieurDataSource(
-      List<Semis> semisExterieur, List<CalendarResource> resourcesColl) {
-    appointments = semisExterieur;
+class SemisDataSource extends CalendarDataSource {
+  SemisDataSource(List<Semis> semisExterieur, List<Semis> semisInterieur,
+      List<Semis> plantation, List<CalendarResource> resourcesColl) {
+    appointments = semisInterieur;
+    appointments!.addAll(semisExterieur);
+    appointments!.addAll(plantation);
+
+    resources = resourcesColl;
   }
 
   @override
   DateTime getStartTime(int index) {
-    return appointments![index].recurrence_semis_interieur;
+    return appointments![index].recurrence;
   }
 
   @override
   DateTime getEndTime(int index) {
-    return appointments![index]
-        .recurrence_semis_interieur
-        .add(const Duration(days: 30));
+    return appointments![index].recurrence.add(const Duration(days: 30));
   }
 
   @override
@@ -140,55 +163,41 @@ class SemisExterieurDataSource extends CalendarDataSource {
   bool isAllDay(int index) {
     return appointments![index].isAllDay = true;
   }
+
+  @override
+  List<Object> getResourceIds(int index) {
+    return appointments![index].resourceIds;
+  }
 }
-
-// class SemisInterieurDataSource extends CalendarDataSource {
-//   SemisInterieurDataSource(
-//       List<Semis> semisInterieur, List<CalendarResource> resourcesColl) {
-//     appointments = semisInterieur;
-//     resources = resourcesColl;
-//   }
-
-//   @override
-//   DateTime getStartTime(int index) {
-//     return appointments![index].recurrence_semis_interieur;
-//   }
-
-//   @override
-//   DateTime getEndTime(int index) {
-//     return appointments![index]
-//         .recurrence_semis_interieur
-//         .add(const Duration(days: 30));
-//   }
-
-//   @override
-//   String getSubject(int index) {
-//     return appointments![index].legumes;
-//   }
-
-//   @override
-//   Color getColor(int index) {
-//     return appointments![index].color;
-//   }
-
-//   @override
-//   bool isAllDay(int index) {
-//     return appointments![index].isAllDay = true;
-//   }
-// }
 
 class Semis {
   Semis(
     this.legumes,
-    this.recurrence_semis_interieur,
+    this.recurrence,
     this.color,
     this.isAllDay,
     this.resourceIds,
   );
 
   String legumes;
-  DateTime recurrence_semis_interieur;
+  DateTime recurrence;
   Color color;
   bool isAllDay;
   List<String> resourceIds;
 }
+
+// class Plantation {
+//   Plantation(
+//     this.legumes,
+//     this.recurrence,
+//     this.color,
+//     this.isAllDay,
+//     this.resourceIds,
+//   );
+
+//   String legumes;
+//   DateTime recurrence;
+//   Color color;
+//   bool isAllDay;
+//   List<String> resourceIds;
+// }

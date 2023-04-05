@@ -18,7 +18,7 @@ class _PlantPageState extends State<PlantPage> {
   final user = FirebaseAuth.instance.currentUser!;
 
   Stream<List<Plant>> readPlants() => FirebaseFirestore.instance
-      .collection('plants')
+      .collection('userPlante')
       .where('userId', isEqualTo: user.uid)
       .snapshots()
       .map((snapshot) => snapshot.docs
