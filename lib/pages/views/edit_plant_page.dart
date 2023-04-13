@@ -70,6 +70,8 @@ class _EditPlantPageState extends State<EditPlantPage> {
                     widget.currentPlant.dureeDeGerminationFromRef,
                 isSeedlingUnderGreenhouse:
                     widget.currentPlant.isSeedlingUnderGreenhouse,
+                idSemisExterieur: widget.currentPlant.idSemisExterieur,
+                idSemisInterieur: widget.currentPlant.idSemisInterieur,
                 // date: DateTime.parse(dateController.text),
               );
               updatePlant(editingPlant, widget.currentPlant);
@@ -107,6 +109,8 @@ class _EditPlantPageState extends State<EditPlantPage> {
                     int.parse(dureeDeGerminationController.text),
                 dureeDeGerminationFromRef:
                     widget.currentPlant.dureeDeGerminationFromRef,
+                idSemisExterieur: widget.currentPlant.idSemisExterieur,
+                idSemisInterieur: widget.currentPlant.idSemisInterieur,
                 // date: DateTime.parse(dateController.text),
                 isSeedlingUnderGreenhouse: true,
                 startSeedlingUnderGreenHouse: DateTime.now(),
@@ -139,6 +143,8 @@ class _EditPlantPageState extends State<EditPlantPage> {
                     widget.currentPlant.dureeDeGerminationFromRef,
                 // date: DateTime.parse(dateController.text),
                 isSeedlingUnderGreenhouse: false,
+                idSemisExterieur: widget.currentPlant.idSemisExterieur,
+                idSemisInterieur: widget.currentPlant.idSemisInterieur,
               );
               updateStopSeedlingUnderGreenHouse(isSeedlingUnderGreenhouse);
               Navigator.pop(context);

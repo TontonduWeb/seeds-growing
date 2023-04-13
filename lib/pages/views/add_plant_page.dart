@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seeds/models/plant.dart';
-import 'package:seeds/models/semis_exterieur.dart';
 
 // final plantAddedProvider = StateProvider((_) => false);
 
@@ -71,6 +70,8 @@ class _AddPlantPageState extends State<AddPlantPage> {
                     currentPlant.dureeDeGerminationFromRef,
                 startSeedlingUnderGreenHouse:
                     currentPlant.startSeedlingUnderGreenHouse,
+                idSemisExterieur: currentPlant.idSemisExterieur,
+                idSemisInterieur: currentPlant.idSemisInterieur,
                 // date: DateTime.parse(dateController.text),
               );
               setPlant(settingPlant: settingPlant);

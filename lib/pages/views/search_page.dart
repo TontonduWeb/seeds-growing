@@ -106,11 +106,14 @@ class _PlantsRefPageState extends State<SearchPage> {
   void selectPlant(PlantRef plantRef) {
     Navigator.pushNamed(context, AddPlantPage.routeName,
         arguments: Plant(
-            id: plantRef.id,
-            userId: user.uid,
-            nom: plantRef.nom,
-            category: plantRef.category,
-            dureeDeGerminationFromRef: plantRef.dureeDeGerminationFromRef));
+          id: plantRef.id,
+          userId: user.uid,
+          nom: plantRef.nom,
+          category: plantRef.category,
+          dureeDeGerminationFromRef: plantRef.dureeDeGerminationFromRef,
+          idSemisExterieur: plantRef.idSemisExterieur,
+          idSemisInterieur: plantRef.idSemisInterieur,
+        ));
   }
 
   @override

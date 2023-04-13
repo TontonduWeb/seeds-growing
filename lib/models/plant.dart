@@ -9,20 +9,24 @@ class Plant {
   final String dureeDeGerminationFromRef;
   final bool? isSeedlingUnderGreenhouse;
   final DateTime? startSeedlingUnderGreenHouse;
+  final String? idSemisExterieur;
+  final String? idSemisInterieur;
 
   // final DateTime date;
 
-  Plant({
-    this.id = '',
-    required this.userId,
-    required this.nom,
-    required this.category,
-    this.dureeDeGermination,
-    required this.dureeDeGerminationFromRef,
-    this.isSeedlingUnderGreenhouse = false,
-    this.startSeedlingUnderGreenHouse,
-    // required this.date
-  });
+  Plant(
+      {this.id = '',
+      required this.userId,
+      required this.nom,
+      required this.category,
+      this.dureeDeGermination,
+      required this.dureeDeGerminationFromRef,
+      this.isSeedlingUnderGreenhouse = false,
+      this.startSeedlingUnderGreenHouse,
+      this.idSemisExterieur,
+      this.idSemisInterieur
+      // required this.date
+      });
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -34,6 +38,8 @@ class Plant {
         'La graine est planté sous serre': isSeedlingUnderGreenhouse,
         'date de démarrage de la germination sous serre':
             startSeedlingUnderGreenHouse,
+        'id_semis_exterieur': idSemisExterieur,
+        'id_semis_interieur': idSemisInterieur,
         // 'date': date
       };
 
@@ -49,6 +55,8 @@ class Plant {
             (json['date de démarrage de la germination sous serre']
                     as Timestamp?)
                 ?.toDate(),
+        idSemisExterieur: json['id_semis_exterieur'],
+        idSemisInterieur: json['id_semis_interieur'],
       );
 
   Plant copyWith({
@@ -61,6 +69,8 @@ class Plant {
     bool? isSeedlingUnderGreenhouse,
     DateTime? startSeedlingUnderGreenHouse,
     DateTime? date,
+    String? idSemisExterieur,
+    String? idSemisInterieur,
   }) =>
       Plant(
         id: id ?? this.id,
@@ -72,6 +82,8 @@ class Plant {
         isSeedlingUnderGreenhouse: this.isSeedlingUnderGreenhouse,
         startSeedlingUnderGreenHouse:
             startSeedlingUnderGreenHouse ?? this.startSeedlingUnderGreenHouse,
+        idSemisExterieur: idSemisExterieur ?? this.idSemisExterieur,
+        idSemisInterieur: idSemisInterieur ?? this.idSemisInterieur,
         // date: date ?? this.date,
       );
 }
