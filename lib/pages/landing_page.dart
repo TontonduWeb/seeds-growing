@@ -5,7 +5,6 @@ import 'package:seeds/pages/categories_page.dart';
 import 'package:seeds/pages/plant_page.dart';
 import 'package:seeds/pages/views/add_plant_page.dart';
 import 'package:seeds/pages/views/search_page.dart';
-
 import 'calendar_page.dart';
 
 class LandingPage extends StatelessWidget {
@@ -21,6 +20,10 @@ class LandingPage extends StatelessWidget {
       ],
       supportedLocales: const [
         Locale('fr'),
+        Locale('en'),
+        Locale('zh'),
+        Locale('ar'),
+        Locale('ja'),
       ],
       locale: const Locale('fr'),
       theme: ThemeData(

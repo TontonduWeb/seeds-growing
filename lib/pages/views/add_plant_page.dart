@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seeds/models/plant.dart';
-
-// final plantAddedProvider = StateProvider((_) => false);
 
 class AddPlantPage extends StatefulWidget {
   const AddPlantPage({super.key});
@@ -72,6 +69,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
                     currentPlant.startSeedlingUnderGreenHouse,
                 idSemisExterieur: currentPlant.idSemisExterieur,
                 idSemisInterieur: currentPlant.idSemisInterieur,
+                idPlantation: currentPlant.idPlantation,
                 // date: DateTime.parse(dateController.text),
               );
               setPlant(settingPlant: settingPlant);

@@ -113,6 +113,7 @@ class _PlantsRefPageState extends State<SearchPage> {
           dureeDeGerminationFromRef: plantRef.dureeDeGerminationFromRef,
           idSemisExterieur: plantRef.idSemisExterieur,
           idSemisInterieur: plantRef.idSemisInterieur,
+          idPlantation: plantRef.idPlantation,
         ));
   }
 

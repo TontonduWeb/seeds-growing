@@ -11,6 +11,7 @@ class Plant {
   final DateTime? startSeedlingUnderGreenHouse;
   final String? idSemisExterieur;
   final String? idSemisInterieur;
+  final String? idPlantation;
 
   // final DateTime date;
 
@@ -24,7 +25,8 @@ class Plant {
       this.isSeedlingUnderGreenhouse = false,
       this.startSeedlingUnderGreenHouse,
       this.idSemisExterieur,
-      this.idSemisInterieur
+      this.idSemisInterieur,
+      this.idPlantation
       // required this.date
       });
 
@@ -40,6 +42,7 @@ class Plant {
             startSeedlingUnderGreenHouse,
         'id_semis_exterieur': idSemisExterieur,
         'id_semis_interieur': idSemisInterieur,
+        'id_plantation_ref': idPlantation,
         // 'date': date
       };
 
@@ -57,6 +60,7 @@ class Plant {
                 ?.toDate(),
         idSemisExterieur: json['id_semis_exterieur'],
         idSemisInterieur: json['id_semis_interieur'],
+        idPlantation: json['id_plantation_ref'],
       );
 
   Plant copyWith({
@@ -71,6 +75,7 @@ class Plant {
     DateTime? date,
     String? idSemisExterieur,
     String? idSemisInterieur,
+    String? idPlantation,
   }) =>
       Plant(
         id: id ?? this.id,
@@ -84,6 +89,7 @@ class Plant {
             startSeedlingUnderGreenHouse ?? this.startSeedlingUnderGreenHouse,
         idSemisExterieur: idSemisExterieur ?? this.idSemisExterieur,
         idSemisInterieur: idSemisInterieur ?? this.idSemisInterieur,
+        idPlantation: idPlantation ?? this.idPlantation,
         // date: date ?? this.date,
       );
 }
