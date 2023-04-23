@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:seeds/main.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -9,6 +10,22 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+
+    auth.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+        navigatorKey.currentState!.pushReplacementNamed('/');
+      } else {
+        print('User is signed in!');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
@@ -38,8 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: TextStyle(fontSize: 24),
               ),
               onPressed: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.pop(context);
+                auth.signOut();
               },
             )
           ],

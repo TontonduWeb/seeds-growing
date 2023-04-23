@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,7 +14,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    const ProviderScope(child: MyApp()),
+    const MyApp(),
   );
 }
 
@@ -72,20 +71,18 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: const MyHomePage(title: 'Seeds Growing App'),
+        home: const AuthStatePage(),
       );
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class AuthStatePage extends StatefulWidget {
+  const AuthStatePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<AuthStatePage> createState() => _AuthStatePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _AuthStatePageState extends State<AuthStatePage> {
   final controller = TextEditingController();
 
   @override
