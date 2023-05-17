@@ -4,40 +4,31 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:seeds/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../pages/landing_page.dart';
-
-class OnBoardingPage extends StatefulWidget {
-  const OnBoardingPage({Key? key}) : super(key: key);
+class OnboardingPage extends StatefulWidget {
+  const OnboardingPage({Key? key}) : super(key: key);
 
   @override
-  OnBoardingPageState createState() => OnBoardingPageState();
+  OnboardingPageState createState() => OnboardingPageState();
 }
 
-class OnBoardingPageState extends State<OnBoardingPage> {
+class OnboardingPageState extends State<OnboardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   @override
   void initState() {
     super.initState();
-    resetNewLaunch();
   }
 
-  void _onIntroEnd(context) {
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(builder: (_) => const LandingPage()),
-    // );
-    navigatorKey.currentState!.push(MaterialPageRoute(
-        builder: (BuildContext context) => const LandingPage()));
-  }
-
-  resetNewLaunch() async {
+  void _onIntroEnd(context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey("newLaunch")) {
-      prefs.setBool('newLaunch', false);
-    } else {
-      prefs.setBool('newLaunch', false);
-    }
-    print(prefs.getBool('newLaunch'));
+    prefs.setBool('isFirstLaunch', false);
+
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (BuildContext context) => const AuthPage(),
+      ),
+      ((route) => false),
+    );
   }
 
   Widget _buildFullscreenImage() {
@@ -80,15 +71,16 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           ),
         ),
       ),
-      globalFooter: SizedBox(
-        width: double.infinity,
-        height: 60,
-        child: ElevatedButton(
+      globalFooter: InkWell(
+        onTap: () => _onIntroEnd(context),
+        child: Container(
+          color: Colors.green,
+          width: double.infinity,
+          height: 60,
           child: const Text(
             'Let\'s go right away!',
             style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
           ),
-          onPressed: () => _onIntroEnd(context),
         ),
       ),
       pages: [
@@ -172,11 +164,11 @@ class OnBoardingPageState extends State<OnBoardingPage> {
         ),
       ],
       onDone: () => _onIntroEnd(context),
-      //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
+      onSkip: () => _onIntroEnd(context), // You can override onSkip callback
       showSkipButton: false,
       skipOrBackFlex: 0,
       nextFlex: 0,
-      showBackButton: true,
+      showBackButton: false,
       //rtl: true, // Display as right-to-left
       back: const Icon(Icons.arrow_back),
       skip: const Text('Skip', style: TextStyle(fontWeight: FontWeight.w600)),

@@ -3,18 +3,19 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:seeds/main.dart';
 import 'package:seeds/pages/forgot_password_page.dart';
+import 'package:seeds/pages/signup_page.dart';
 import 'package:seeds/utils.dart';
 
-class LoginWidget extends StatefulWidget {
-  final VoidCallback onClickedSignUp;
+class LoginPage extends StatefulWidget {
+  const LoginPage({
+    Key? key,
+  }) : super(key: key);
 
-  const LoginWidget({Key? key, required this.onClickedSignUp})
-      : super(key: key);
   @override
-  State<LoginWidget> createState() => _LoginWidgetState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginWidgetState extends State<LoginWidget> {
+class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -82,18 +83,24 @@ class _LoginWidgetState extends State<LoginWidget> {
               ),
               const SizedBox(height: 16),
               RichText(
-                  text: TextSpan(
-                      style: const TextStyle(color: Colors.black),
-                      text: 'Pas encore de compte ',
-                      children: [
+                text: TextSpan(
+                  style: const TextStyle(color: Colors.black),
+                  text: 'Pas encore de compte ',
+                  children: [
                     TextSpan(
                         recognizer: TapGestureRecognizer()
-                          ..onTap = widget.onClickedSignUp,
+                          ..onTap = () => {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const SignUpPage(),
+                                )),
+                              },
                         text: 'S\'inscrire',
                         style: TextStyle(
                             decoration: TextDecoration.underline,
                             color: Theme.of(context).colorScheme.secondary))
-                  ]))
+                  ],
+                ),
+              )
             ],
           ),
         ),

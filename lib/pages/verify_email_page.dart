@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:seeds/pages/landing_page.dart';
+import 'package:seeds/pages/menu_page.dart';
 import 'package:seeds/utils.dart';
 
 class VerifyEmailPage extends StatefulWidget {
@@ -13,9 +13,9 @@ class VerifyEmailPage extends StatefulWidget {
 }
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
-  bool isEmailVerified = false;
   bool canResentEmail = false;
   Timer? timer;
+  bool isEmailVerified = false;
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
   @override
   Widget build(BuildContext context) => isEmailVerified
-      ? const LandingPage()
+      ? const MenuPage()
       : Scaffold(
           appBar: AppBar(
             title: const Text('Verifier votre email'),
@@ -89,7 +89,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     try {
       final user = FirebaseAuth.instance.currentUser!;
       await user.sendEmailVerification();
-
+      Utils.showSnackBar('Email de vérification envoyé');
+      // Before calling setState check if canResentEmail property is mounted
+      if (!mounted) return;
       setState(() => canResentEmail = false);
       await Future.delayed(const Duration(seconds: 5));
       setState(() => canResentEmail = true);

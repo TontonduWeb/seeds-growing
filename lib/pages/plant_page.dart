@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:seeds/models/plant.dart';
 import 'package:seeds/pages/profile_page.dart';
 import 'package:seeds/pages/views/edit_plant_page.dart';
-import 'auth_page.dart';
 
 class PlantPage extends StatefulWidget {
   const PlantPage({super.key});
@@ -33,40 +32,38 @@ class _PlantPageState extends State<PlantPage> {
           .toList());
 
   @override
-  Widget build(BuildContext context) => isUserConnected
-      ? const AuthPage()
-      : Scaffold(
-          appBar: AppBar(
-            title: const Text('Toutes vos graines répertoriées'),
-            actions: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.account_circle),
-                tooltip: 'Profile',
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ProfilePage(),
-                      ));
-                },
-              ),
-            ],
-          ),
-          body: StreamBuilder<List<Plant>>(
-            stream: readPlants(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final plants = snapshot.data!;
-                plants.sort((a, b) => a.nom.compareTo(b.nom));
-                return ListView(
-                  children: plants.map((plant) => buildPlant(plant)).toList(),
-                );
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            },
-          ),
-        );
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Toutes vos graines répertoriées'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.account_circle),
+              tooltip: 'Profile',
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProfilePage(),
+                    ));
+              },
+            ),
+          ],
+        ),
+        body: StreamBuilder<List<Plant>>(
+          stream: readPlants(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final plants = snapshot.data!;
+              plants.sort((a, b) => a.nom.compareTo(b.nom));
+              return ListView(
+                children: plants.map((plant) => buildPlant(plant)).toList(),
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+      );
 
   Widget buildPlant(Plant plant) {
     return ListTile(

@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:seeds/pages/login_page.dart';
+import 'package:seeds/pages/menu_page.dart';
+import 'package:seeds/widgets/onboarding_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'package:seeds/pages/auth_page.dart';
 import 'package:seeds/pages/verify_email_page.dart';
 import 'package:seeds/utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // prefs.setBool('isFirstLaunch', true);
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -23,19 +30,35 @@ final navigatorKey = GlobalKey<NavigatorState>();
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  checkFirstLaunch() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isFirstLaunch') ?? true;
+  }
+
   @override
   Widget build(BuildContext context) => MaterialApp(
         scaffoldMessengerKey: Utils.messengerKey,
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
+        // localizationsDelegates: const [
+        //   GlobalMaterialLocalizations.delegate,
+        //   GlobalWidgetsLocalizations.delegate,
+        // ],
+        // supportedLocales: const [
+        //   Locale('fr'),
+        //   Locale('en'),
+        //   Locale('zh'),
+        //   Locale('ar'),
+        //   Locale('ja'),
+        // ],
+        // locale: const Locale('fr'),
         theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch().copyWith(
             primary: const Color.fromRGBO(29, 60, 69, 1.0),
             secondary: const Color.fromRGBO(210, 96, 26, 1.0),
             background: const Color.fromRGBO(255, 241, 225, 1.0),
           ),
-          fontFamily: 'Rubik',
           scaffoldBackgroundColor: const Color.fromRGBO(255, 241, 225, 1.0),
           appBarTheme: const AppBarTheme(
             color: Color.fromRGBO(29, 60, 69, 1.0),
@@ -71,24 +94,28 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: const AuthStatePage(),
+        home: FutureBuilder(
+          future: checkFirstLaunch(),
+          builder: ((context, futureResult) {
+            if (futureResult.hasData) {
+              return futureResult.data == true
+                  ? const OnboardingPage()
+                  : const AuthPage();
+            } else {
+              return Container(
+                color: Colors.white,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+          }),
+        ),
       );
 }
 
-class AuthStatePage extends StatefulWidget {
-  const AuthStatePage({super.key});
-
-  @override
-  State<AuthStatePage> createState() => _AuthStatePageState();
-}
-
-class _AuthStatePageState extends State<AuthStatePage> {
-  final controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+class AuthPage extends StatelessWidget {
+  const AuthPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -100,9 +127,16 @@ class _AuthStatePageState extends State<AuthStatePage> {
             } else if (snapshot.hasError) {
               return const Center(child: Text('Something went wrong'));
             } else if (snapshot.hasData) {
+              final isEmailVerified =
+                  FirebaseAuth.instance.currentUser!.emailVerified;
+
+              if (isEmailVerified) {
+                return const MenuPage();
+              }
               return const VerifyEmailPage();
             }
-            return const AuthPage();
+
+            return const LoginPage();
           },
         ),
       );

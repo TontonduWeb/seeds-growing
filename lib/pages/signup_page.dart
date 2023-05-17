@@ -3,21 +3,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:seeds/main.dart';
+import 'package:seeds/pages/login_page.dart';
+import 'package:seeds/pages/verify_email_page.dart';
 import 'package:seeds/utils.dart';
 
-class SignUpWidget extends StatefulWidget {
-  final Function() onClickedSignIn;
-
-  const SignUpWidget({
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({
     Key? key,
-    required this.onClickedSignIn,
   }) : super(key: key);
 
   @override
-  State<SignUpWidget> createState() => _SignUpWidgetState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpWidgetState extends State<SignUpWidget> {
+class _SignUpPageState extends State<SignUpPage> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -89,7 +88,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     children: [
                       TextSpan(
                         recognizer: TapGestureRecognizer()
-                          ..onTap = widget.onClickedSignIn,
+                          ..onTap = () =>
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const LoginPage(),
+                              )),
                         text: 'Se connecter',
                         style: TextStyle(
                           decoration: TextDecoration.underline,
@@ -105,11 +107,17 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
   Future signUp() async {
     final isValid = formKey.currentState!.validate();
+
     if (!isValid) return;
+
     showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(child: CircularProgressIndicator()));
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
@@ -119,6 +127,11 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       print(e);
       Utils.showSnackBar(e.message);
     }
-    navigatorKey.currentState!.popUntil((route) => route.isFirst);
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (context) => const VerifyEmailPage(),
+      ),
+      (route) => false,
+    );
   }
 }
