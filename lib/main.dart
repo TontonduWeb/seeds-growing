@@ -1,4 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:seeds/pages/login_page.dart';
 import 'package:seeds/pages/menu_page.dart';
 import 'package:seeds/pages/views/add_plant_page.dart';
@@ -18,6 +20,15 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
+    // TODO: If necessary send token to application server.
+
+    // Note: This callback is fired at each app startup and whenever a new
+    // token is generated.
+  }).onError((err) {
+    // Error getting token.
+  });
   runApp(
     const MyApp(),
   );
@@ -34,7 +45,9 @@ class MyApp extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
+  Widget build(BuildContext context) {
+    return OverlaySupport(
+      child: MaterialApp(
         scaffoldMessengerKey: Utils.messengerKey,
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
@@ -98,7 +111,9 @@ class MyApp extends StatelessWidget {
             }
           }),
         ),
-      );
+      ),
+    );
+  }
 }
 
 class AuthPage extends StatelessWidget {
