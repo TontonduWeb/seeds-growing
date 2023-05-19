@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:seeds/pages/login_page.dart';
 import 'package:seeds/pages/menu_page.dart';
+import 'package:seeds/pages/views/add_plant_page.dart';
 import 'package:seeds/widgets/onboarding_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,8 +14,6 @@ import 'package:seeds/utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // SharedPreferences prefs = await SharedPreferences.getInstance();
-  // prefs.setBool('isFirstLaunch', true);
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -41,18 +39,7 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        // localizationsDelegates: const [
-        //   GlobalMaterialLocalizations.delegate,
-        //   GlobalWidgetsLocalizations.delegate,
-        // ],
-        // supportedLocales: const [
-        //   Locale('fr'),
-        //   Locale('en'),
-        //   Locale('zh'),
-        //   Locale('ar'),
-        //   Locale('ja'),
-        // ],
-        // locale: const Locale('fr'),
+        routes: {'/addPlant': (context) => const AddPlantPage()},
         theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch().copyWith(
             primary: const Color.fromRGBO(29, 60, 69, 1.0),
