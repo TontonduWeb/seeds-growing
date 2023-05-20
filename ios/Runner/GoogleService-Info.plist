@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>39443232027-m9l9hig4kgord6rsp49nu82iikalvkrq.apps.googleusercontent.com</string>
+	<string>39443232027-9pddckse3hkhrptpgurhdb8j00s5fijk.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.39443232027-m9l9hig4kgord6rsp49nu82iikalvkrq</string>
+	<string>com.googleusercontent.apps.39443232027-9pddckse3hkhrptpgurhdb8j00s5fijk</string>
 	<key>API_KEY</key>
 	<string>AIzaSyB1z_z05pfb4Z8pV-SGyHQpetKOTCInRWg</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.seeds-growing</string>
+	<string>com.seeds.seeds-growing</string>
 	<key>PROJECT_ID</key>
 	<string>seeds-growing</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:39443232027:ios:70081c0994917d94bacfbe</string>
+	<string>1:39443232027:ios:0be5be3232d98771bacfbe</string>
 </dict>
 </plist>

@@ -44,8 +44,9 @@ class _CalendarPageState extends State<CalendarPage> {
         body: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Row(
+                Column(
                   children: <Widget>[
                     Switch(
                       value: _isSemisInterieur,
@@ -80,11 +81,10 @@ class _CalendarPageState extends State<CalendarPage> {
                     ),
                     const Text(
                       'Semis Interieur',
-                      style: TextStyle(fontSize: 13),
                     ),
                   ],
                 ),
-                Row(
+                Column(
                   children: <Widget>[
                     Switch(
                         value: _isSemisExterieur,
@@ -118,11 +118,10 @@ class _CalendarPageState extends State<CalendarPage> {
                         activeColor: const Color(0xff5ba87f).withOpacity(1)),
                     const Text(
                       'Semis Exterieur',
-                      style: TextStyle(fontSize: 13),
                     ),
                   ],
                 ),
-                Row(
+                Column(
                   children: <Widget>[
                     Switch(
                         value: isPlantation,
@@ -154,7 +153,6 @@ class _CalendarPageState extends State<CalendarPage> {
                         activeColor: const Color(0xff396ba8).withOpacity(1)),
                     const Text(
                       'Plantation',
-                      style: TextStyle(fontSize: 13),
                     ),
                   ],
                 ),

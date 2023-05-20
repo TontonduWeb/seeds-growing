@@ -54,12 +54,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB1z_z05pfb4Z8pV-SGyHQpetKOTCInRWg',
-    appId: '1:39443232027:ios:70081c0994917d94bacfbe',
+    appId: '1:39443232027:ios:0be5be3232d98771bacfbe',
     messagingSenderId: '39443232027',
     projectId: 'seeds-growing',
     storageBucket: 'seeds-growing.appspot.com',
-    iosClientId:
-        '39443232027-m9l9hig4kgord6rsp49nu82iikalvkrq.apps.googleusercontent.com',
-    iosBundleId: 'com.example.seeds-growing',
+    iosClientId: '39443232027-9pddckse3hkhrptpgurhdb8j00s5fijk.apps.googleusercontent.com',
+    iosBundleId: 'com.seeds.seeds-growing',
   );
 }

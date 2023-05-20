@@ -7,6 +7,10 @@ import 'package:seeds/main.dart';
 
 import '../widgets/notification_badge_widget.dart';
 
+Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
+}
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -27,6 +31,8 @@ class _ProfilePageState extends State<ProfilePage> {
     // 2. Instantiate Firebase Messaging
     _messaging = FirebaseMessaging.instance;
 
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
     // 3. On iOS, this helps to take the user permissions
     NotificationSettings settings = await _messaging.requestPermission(
       alert: true,
@@ -36,7 +42,11 @@ class _ProfilePageState extends State<ProfilePage> {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission');
+      _totalNotifications = 1;
+      _notificationInfo = PushNotification(
+        title: 'Welcome to Seeds',
+        body: 'You will now receive notifications',
+      );
 
       // For handling the received notifications
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -44,6 +54,8 @@ class _ProfilePageState extends State<ProfilePage> {
         PushNotification notification = PushNotification(
           title: message.notification?.title,
           body: message.notification?.body,
+          dataTitle: message.data['title'],
+          dataBody: message.data['body'],
         );
 
         setState(() {
@@ -66,9 +78,41 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  // For handling notification when the app is in terminated state
+  checkForInitialMessage() async {
+    await Firebase.initializeApp();
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      PushNotification notification = PushNotification(
+        title: initialMessage.notification?.title,
+        body: initialMessage.notification?.body,
+      );
+      setState(() {
+        _notificationInfo = notification;
+        _totalNotifications++;
+      });
+    }
+  }
+
   @override
   void initState() {
     _totalNotifications = 0;
+    registerNotification();
+    checkForInitialMessage();
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      PushNotification notification = PushNotification(
+        title: message.notification?.title,
+        body: message.notification?.body,
+      );
+      setState(() {
+        _notificationInfo = notification;
+        _totalNotifications++;
+      });
+    });
+
     super.initState();
 
     auth.authStateChanges().listen((User? user) {
@@ -113,30 +157,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 auth.signOut();
               },
             ),
-            _notificationInfo != null
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'TITLE: ${_notificationInfo!.title}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        'BODY: ${_notificationInfo!.body}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ],
-                  )
-                : Container(
-                    child: Text('No data'),
-                  ),
           ],
         ),
       ),
@@ -148,7 +168,11 @@ class PushNotification {
   PushNotification({
     this.title,
     this.body,
+    this.dataTitle,
+    this.dataBody,
   });
   String? title;
   String? body;
+  String? dataTitle;
+  String? dataBody;
 }
