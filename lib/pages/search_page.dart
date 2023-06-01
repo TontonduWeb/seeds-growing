@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:seeds/models/plant.dart';
 import 'package:seeds/pages/views/add_plant_page.dart';
 
-import '../../models/plant_ref.dart';
+import '../models/plant_ref.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});

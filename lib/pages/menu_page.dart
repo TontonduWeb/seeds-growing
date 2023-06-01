@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seeds/pages/calendar_page.dart';
 import 'package:seeds/pages/categories_page.dart';
 import 'package:seeds/pages/plant_page.dart';
-import 'package:seeds/pages/views/search_page.dart';
+import 'package:seeds/pages/search_page.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -16,9 +16,9 @@ class _MenuPageState extends State<MenuPage> {
 
   static const List<Widget> _pages = <Widget>[
     PlantPage(),
-    CategoriesPlant(),
     SearchPage(),
     CalendarPage(),
+    CategoriesPlant(),
   ];
 
   @override
@@ -40,16 +40,16 @@ class _MenuPageState extends State<MenuPage> {
               label: 'Acceuil',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_repair_service),
-              label: 'Boite',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.search),
               label: 'Recherche',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today),
               label: 'Calendrier',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_repair_service),
+              label: 'Boite',
             ),
           ],
           selectedItemColor: Colors.amber[800],

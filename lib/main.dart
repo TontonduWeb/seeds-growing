@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:seeds/pages/login_page.dart';
+import 'package:seeds/pages/auth/login_page.dart';
 import 'package:seeds/pages/menu_page.dart';
 import 'package:seeds/pages/views/add_plant_page.dart';
 import 'package:seeds/widgets/onboarding_widget.dart';
@@ -11,8 +11,8 @@ import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'package:seeds/pages/verify_email_page.dart';
-import 'package:seeds/utils.dart';
+import 'package:seeds/pages/auth/verify_email_page.dart';
+import 'package:seeds/widgets/utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

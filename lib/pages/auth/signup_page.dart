@@ -2,9 +2,9 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:seeds/pages/login_page.dart';
-import 'package:seeds/pages/verify_email_page.dart';
-import 'package:seeds/utils.dart';
+import 'package:seeds/pages/auth/login_page.dart';
+import 'package:seeds/pages/auth/verify_email_page.dart';
+import 'package:seeds/widgets/utils.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({

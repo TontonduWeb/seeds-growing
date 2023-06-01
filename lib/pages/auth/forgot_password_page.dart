@@ -1,9 +1,9 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:seeds/utils.dart';
+import 'package:seeds/widgets/utils.dart';
 
-import '../main.dart';
+import '../../main.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
