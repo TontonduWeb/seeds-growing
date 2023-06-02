@@ -5,6 +5,7 @@
 
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const { getMessaging } = require("firebase-admin/messaging");
 admin.initializeApp(functions.config().firebase);
 
 exports.notification = functions.firestore
@@ -13,15 +14,15 @@ exports.notification = functions.firestore
     const value = change.after.data();
     console.log("value", value);
     if (value) {
-      const payload = {
+      const data = {
         notification: {
           title: "Nouvelle plante",
-          body: "Une nouvelle plante a été ajouté",
+          body: "PLANTE",
         },
       };
       return admin
         .messaging()
-        .sendToTopic("messaging", payload)
+        .sendToTopic("messaging", data)
         .then((response) => {
           console.log("Successfully sent message:", response);
         })
@@ -30,3 +31,19 @@ exports.notification = functions.firestore
         });
     }
   });
+
+// exports.notification2 = functions.firestore
+//   .document("userPlante/{docId}")
+//   .onWrite((change, context) => {
+//     const topic = "messaging";
+//     const value = change.after.data();
+//     const oldValue = change.before.data();
+//     const message = {
+//       data: {
+//         title: "Messaging Topic",
+//         body: "This is a Firebase Cloud Messaging Topic Message!",
+//       },
+//       topic: topic,
+//     };
+//     getMessaging().send(message);
+//   });

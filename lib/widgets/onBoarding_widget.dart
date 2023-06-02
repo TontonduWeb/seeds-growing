@@ -37,13 +37,19 @@ class OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    const bodyStyle = TextStyle(fontSize: 19.0);
+    const bodyStyle = TextStyle(
+      fontSize: 19.0,
+      color: Color.fromRGBO(255, 241, 225, 1.0),
+    );
 
     const pageDecoration = PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
+      titleTextStyle: TextStyle(
+          fontSize: 28.0,
+          fontWeight: FontWeight.w700,
+          color: Color.fromRGBO(255, 241, 225, 1.0)),
       bodyTextStyle: bodyStyle,
       bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: Color.fromRGBO(255, 241, 225, 1.0),
+      pageColor: Color.fromRGBO(29, 60, 69, 1.0),
       imagePadding: EdgeInsets.zero,
     );
 
@@ -51,7 +57,6 @@ class OnboardingPageState extends State<OnboardingPage> {
       key: introKey,
       globalBackgroundColor: Colors.white,
       allowImplicitScrolling: true,
-      autoScrollDuration: 3000,
       globalHeader: Align(
         alignment: Alignment.topRight,
         child: SafeArea(
@@ -63,11 +68,10 @@ class OnboardingPageState extends State<OnboardingPage> {
       ),
       pages: [
         PageViewModel(
-          title: "Full Screen Page",
-          body:
-              "Pages can be full screen as well.\n\nLorem ipsum dolor sit amet",
+          title: "Savez vous quand mettre vos graines à germer ?",
+          body: "Seeds est là pour vous prévenir !",
           image: Image.asset(
-            'images/onboarding.jpg',
+            'images/seedsReady.jpeg',
             fit: BoxFit.cover,
             height: double.infinity,
             width: double.infinity,
@@ -82,11 +86,29 @@ class OnboardingPageState extends State<OnboardingPage> {
           ),
         ),
         PageViewModel(
-          title: "Full Screen Page",
-          body:
-              "Pages can be full screen as well.\n\nLorem ipsum dolor sit ametX",
+          title: "Une base de donnée disponible",
+          body: "Pour retrouver facilement vos graines",
           image: Image.asset(
-            'images/carottes.jpg',
+            'images/recherche.jpeg',
+            fit: BoxFit.cover,
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.center,
+          ),
+          decoration: pageDecoration.copyWith(
+            contentMargin:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 100),
+            fullScreen: true,
+            bodyFlex: 2,
+            imageFlex: 3,
+            safeArea: 0,
+          ),
+        ),
+        PageViewModel(
+          title: "Un calendrier",
+          body: "Pour planifier vos semis plus facilement",
+          image: Image.asset(
+            'images/calendrier.jpeg',
             fit: BoxFit.cover,
             height: double.infinity,
             width: double.infinity,
@@ -97,7 +119,26 @@ class OnboardingPageState extends State<OnboardingPage> {
             fullScreen: true,
             bodyFlex: 2,
             imageFlex: 3,
-            safeArea: 100,
+            safeArea: 400,
+          ),
+        ),
+        PageViewModel(
+          title: "Un placard",
+          body: "Pour organiser vos graines",
+          image: Image.asset(
+            'images/categorie.jpeg',
+            fit: BoxFit.cover,
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.center,
+          ),
+          decoration: pageDecoration.copyWith(
+            contentMargin:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 100),
+            fullScreen: true,
+            bodyFlex: 2,
+            imageFlex: 3,
+            safeArea: 0,
           ),
         ),
       ],

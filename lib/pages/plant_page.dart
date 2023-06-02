@@ -79,6 +79,7 @@ class _PlantPageState extends State<PlantPage> {
               onError: (error) => log("Failed to add user token: $error"));
 
       print('Token: $token');
+      print('User: $user');
     });
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -103,7 +104,7 @@ class _PlantPageState extends State<PlantPage> {
       // For handling the received notifications
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         print('Got a message whilst in the foreground!');
-        print('Message data: ${message.notification!.body}');
+        print('Message data: ${message.data}');
         if (message.notification != null) {
           print(
               'Message also contained a notification: ${message.notification!.body}');

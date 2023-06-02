@@ -128,6 +128,7 @@ class _PlantsRefPageState extends State<SearchPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              textCapitalization: TextCapitalization.sentences,
               onChanged: (value) {
                 filterSearchResults(value);
               },
